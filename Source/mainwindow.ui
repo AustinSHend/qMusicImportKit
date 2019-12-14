@@ -1,0 +1,1059 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>696</width>
+    <height>482</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>696</width>
+    <height>482</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>696</width>
+    <height>482</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+    <pointsize>9</pointsize>
+    <strikeout>false</strikeout>
+    <stylestrategy>PreferDefault</stylestrategy>
+    <kerning>true</kerning>
+   </font>
+  </property>
+  <property name="acceptDrops">
+   <bool>false</bool>
+  </property>
+  <property name="windowTitle">
+   <string>qMusicImportKit</string>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="InputUpOneButton">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>10</y>
+      <width>21</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↑</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="InputChooseFolderButton">
+    <property name="geometry">
+     <rect>
+      <x>438</x>
+      <y>10</y>
+      <width>100</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Choose Folder</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="InputLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>400</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="placeholderText">
+     <string>Input Folder</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="InputOpenButton">
+    <property name="geometry">
+     <rect>
+      <x>545</x>
+      <y>10</y>
+      <width>140</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open in File Manager</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ResetPathsButton">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>40</y>
+      <width>90</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reset Paths</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="CopyButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>210</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Copy input folder to temp folder</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="TempLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>400</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="placeholderText">
+     <string>Temp Folder</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="TempUpOneButton">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>70</y>
+      <width>21</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↑</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="ArtistLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>230</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="placeholderText">
+     <string>Artist</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="AlbumLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>230</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="placeholderText">
+     <string>Album</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="GuessButton">
+    <property name="geometry">
+     <rect>
+      <x>248</x>
+      <y>116</y>
+      <width>140</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Guess Artist+Album</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DiscogsButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>140</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Discogs</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="MusicBrainzButton">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>160</y>
+      <width>140</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MusicBrainz</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="RedactedButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>160</y>
+      <width>140</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Redacted.ch</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="AlbumArtButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>190</y>
+      <width>140</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>AlbumArtDownloader</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="TagButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>190</y>
+      <width>140</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PuddleTag</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="SpekButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>190</y>
+      <width>140</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Spek</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="OutputUpOneButton">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>220</y>
+      <width>21</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↑</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="OutputLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>220</y>
+      <width>400</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="placeholderText">
+     <string>Output Folder (base path)</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="SyntaxComboBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>250</y>
+      <width>675</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Arbitrary tags: %tag% (%artist% -&amp;gt; Comaduster)&lt;/p&gt;&lt;p&gt;Bit-Depth: &amp;amp;bps&amp;amp; (16)&lt;/p&gt;&lt;p&gt;Bitrate: &amp;amp;bitrate&amp;amp; (Lossless)&lt;/p&gt;&lt;p&gt;Codec: &amp;amp;codec&amp;amp; (FLAC)&lt;/p&gt;&lt;p&gt;Padded Tracknumber: &amp;amp;paddedtracknumber&amp;amp; (07)&lt;/p&gt;&lt;p&gt;Sample Rate: &amp;amp;samplerate&amp;amp; (44100)&lt;/p&gt;&lt;p&gt;Short Sample Rate: &amp;amp;short-samplerate&amp;amp; (44)&lt;/p&gt;&lt;p&gt;Smart Bitrate/Depth/Sample: &amp;amp;smartbit&amp;amp; (16-44 for FLAC, V2 for MP3 V2)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="editable">
+     <bool>true</bool>
+    </property>
+    <property name="currentText">
+     <string/>
+    </property>
+    <property name="currentIndex">
+     <number>-1</number>
+    </property>
+    <property name="frame">
+     <bool>true</bool>
+    </property>
+    <item>
+     <property name="text">
+      <string>%AlbumArtist% - %Album% (%Date%) {%Edition%} [%Mediatype% &amp;codec&amp; - &amp;smartbit&amp;]/&amp;PaddedTrackNumber&amp; - %Title%</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>%AlbumArtist% - %Album% (%Date%) [%Mediatype% &amp;codec&amp; - &amp;smartbit&amp;] {%Edition% %Catalog%}/&amp;PaddedTrackNumber&amp; - %Title%</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>%AlbumArtist% - %Album% (%Date%) [%Mediatype% &amp;codec&amp; - &amp;smartbit&amp;] {%Edition%}/&amp;PaddedTrackNumber&amp; - %Title%</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>%AlbumArtist% - %Album% (%Date%) [%Mediatype% &amp;codec&amp; - &amp;smartbit&amp;] {%Catalog%}/&amp;PaddedTrackNumber&amp; - %Title%</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>%AlbumArtist% - %Date% - %Album% (%Edition%) [%Mediatype% &amp;codec&amp; - &amp;smartbit&amp;]/&amp;PaddedTrackNumber&amp; - %Title%</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QCheckBox" name="ReplayGainCheckBox">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>280</y>
+      <width>680</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Apply ReplayGain</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="CopyContentsCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>300</y>
+      <width>160</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Copy specific filetypes</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="RenameLogCueCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>320</y>
+      <width>660</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Rename .log and .cue to %albumart% - %album%.log and %album.cue%</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="CompressImagesCheckBox">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>340</y>
+      <width>660</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Compress and strip BMPs, GIFs, JPGs, and PNGs</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="DeleteTempFolderCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>380</y>
+      <width>680</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Delete source temp folder</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="ConvertOpenFolderCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>400</y>
+      <width>680</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open folder when done</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="ConvertToComboBox">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>430</y>
+      <width>79</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="ConvertToPresetComboBox">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>430</y>
+      <width>220</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="TempOpenButton">
+    <property name="geometry">
+     <rect>
+      <x>545</x>
+      <y>70</y>
+      <width>140</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open in File Manager</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="TempChooseFolderButton">
+    <property name="geometry">
+     <rect>
+      <x>438</x>
+      <y>70</y>
+      <width>100</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Choose Folder</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="AutoWavConvertCheckBox">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>30</y>
+      <width>270</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Convert input .wav files to .flac</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="OutputOpenButton">
+    <property name="geometry">
+     <rect>
+      <x>545</x>
+      <y>220</y>
+      <width>140</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open in File Manager</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="OutputChooseFolderButton">
+    <property name="geometry">
+     <rect>
+      <x>438</x>
+      <y>220</y>
+      <width>100</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Choose Folder</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="CopyContentsLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>300</y>
+      <width>320</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="placeholderText">
+     <string>e.g. *.jpg; *.log; *.cue; *.pdf</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ConvertButton">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>430</y>
+      <width>170</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Convert</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="XLSXSheetCheckBox">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>360</y>
+      <width>230</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Insert parsed data into .xlsx sheet</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="XLSXLogScoreLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>360</y>
+      <width>70</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="placeholderText">
+     <string>Log score</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="XLSXNotesLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>360</y>
+      <width>360</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="placeholderText">
+     <string>Notes</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>696</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionConfigure"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuSettings"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionConfigure">
+   <property name="text">
+    <string>Configure</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>InputLineEdit</tabstop>
+  <tabstop>InputUpOneButton</tabstop>
+  <tabstop>InputChooseFolderButton</tabstop>
+  <tabstop>InputOpenButton</tabstop>
+  <tabstop>CopyButton</tabstop>
+  <tabstop>AutoWavConvertCheckBox</tabstop>
+  <tabstop>ResetPathsButton</tabstop>
+  <tabstop>TempLineEdit</tabstop>
+  <tabstop>TempUpOneButton</tabstop>
+  <tabstop>TempChooseFolderButton</tabstop>
+  <tabstop>TempOpenButton</tabstop>
+  <tabstop>ArtistLineEdit</tabstop>
+  <tabstop>AlbumLineEdit</tabstop>
+  <tabstop>GuessButton</tabstop>
+  <tabstop>DiscogsButton</tabstop>
+  <tabstop>MusicBrainzButton</tabstop>
+  <tabstop>RedactedButton</tabstop>
+  <tabstop>SpekButton</tabstop>
+  <tabstop>TagButton</tabstop>
+  <tabstop>AlbumArtButton</tabstop>
+  <tabstop>OutputLineEdit</tabstop>
+  <tabstop>OutputUpOneButton</tabstop>
+  <tabstop>OutputChooseFolderButton</tabstop>
+  <tabstop>OutputOpenButton</tabstop>
+  <tabstop>SyntaxComboBox</tabstop>
+  <tabstop>ReplayGainCheckBox</tabstop>
+  <tabstop>CopyContentsCheckBox</tabstop>
+  <tabstop>CopyContentsLineEdit</tabstop>
+  <tabstop>RenameLogCueCheckBox</tabstop>
+  <tabstop>CompressImagesCheckBox</tabstop>
+  <tabstop>XLSXSheetCheckBox</tabstop>
+  <tabstop>XLSXLogScoreLineEdit</tabstop>
+  <tabstop>XLSXNotesLineEdit</tabstop>
+  <tabstop>DeleteTempFolderCheckBox</tabstop>
+  <tabstop>ConvertOpenFolderCheckBox</tabstop>
+  <tabstop>ConvertToComboBox</tabstop>
+  <tabstop>ConvertToPresetComboBox</tabstop>
+  <tabstop>ConvertButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>InputChooseFolderButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openInputFolderChooser()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>492</x>
+     <y>40</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>654</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TempChooseFolderButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openTempFolderChooser()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>474</x>
+     <y>104</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>652</x>
+     <y>170</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>OutputChooseFolderButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openOutputFolderChooser()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>492</x>
+     <y>250</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>652</x>
+     <y>198</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>InputUpOneButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>upOneInputFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>418</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>631</x>
+     <y>183</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TempUpOneButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>upOneTempFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>426</x>
+     <y>104</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>640</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>OutputUpOneButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>upOneOutputFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>421</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>595</x>
+     <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>InputOpenButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openInputFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>597</x>
+     <y>42</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>643</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TempOpenButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openTempFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>610</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>633</x>
+     <y>141</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>OutputOpenButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openOutputFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>617</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>680</x>
+     <y>219</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ResetPathsButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>resetPaths()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>540</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>618</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CopyButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>copyInputToTemp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>666</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>DiscogsButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openDiscogs()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>59</x>
+     <y>188</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>622</x>
+     <y>177</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MusicBrainzButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openMusicBrainz()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>201</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>465</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>RedactedButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openRedacted()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>201</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>532</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>SpekButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openSpekInit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>59</x>
+     <y>231</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>580</x>
+     <y>218</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ConvertButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>convertInitialize()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>398</x>
+     <y>452</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>684</x>
+     <y>464</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>GuessButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>guessButton()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>151</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>519</x>
+     <y>140</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TagButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openTagger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>231</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>484</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AlbumArtButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openAlbumArtFetcher()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>380</x>
+     <y>228</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>554</x>
+     <y>228</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TempLineEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>guessButton()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>298</x>
+     <y>122</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>openInputFolder()</slot>
+  <slot>openTempFolder()</slot>
+  <slot>openOutputFolder()</slot>
+  <slot>upOneInputFolder()</slot>
+  <slot>upOneTempFolder()</slot>
+  <slot>upOneOutputFolder()</slot>
+  <slot>openInputFolderChooser()</slot>
+  <slot>openTempFolderChooser()</slot>
+  <slot>openOutputFolderChooser()</slot>
+  <slot>resetPaths()</slot>
+  <slot>copyInputToTemp()</slot>
+  <slot>openDiscogs()</slot>
+  <slot>openMusicBrainz()</slot>
+  <slot>openRedacted()</slot>
+  <slot>openSpekInit()</slot>
+  <slot>guessButton()</slot>
+  <slot>convertInitialize()</slot>
+  <slot>openTagger()</slot>
+  <slot>openAlbumArtFetcher()</slot>
+ </slots>
+</ui>
