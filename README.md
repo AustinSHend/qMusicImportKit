@@ -4,7 +4,7 @@
 
 Designed for power users who take lineage and data integrity seriously. Integrates many powerful tools into a natural workflow, and takes extra measures to make sure conversions are done the *right* way. Created due to my frustration with using many programs and conversion scripts in a slow and disjointed workflow.
 
-This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHend/MusicImportKit) in Qt and C++, focusing on cross-platform support for Linux and a refining of the original MusicImportKit's features.
+This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHend/MusicImportKit) in Qt and C++, focusing on cross-platform support for Linux and a refinement of the original MusicImportKit's features.
 
 ## Includes
 
