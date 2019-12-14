@@ -1,6 +1,4 @@
-![Main window](https://i.imgur.com/OZ6eKy9.png)
-
-# qMusicImportKit
+# qMusicImportKit <a href="url"><img src="https://user-images.githubusercontent.com/2212907/70855912-361db400-1e98-11ea-9ee5-990acecfd763.png" align="left"></a>
 
 Designed for power users who take lineage and data integrity seriously. Integrates many powerful tools into a natural workflow, and takes extra measures to make sure conversions are done the *right* way. Created due to my frustration with using many programs and conversion scripts in a slow and disjointed workflow.
 
@@ -30,10 +28,13 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 * Impossible to make bad (Lossy->Lossless, Lossy->Lossy) transcodes, ensuring that data stays artifact-free.
 
-* Robust codebase, currently tested on **41** albums of all shapes and sizes (including a few [witch.house](https://i.imgur.com/lBUJZfz.png) albums for good measure). All features have been double and triple-checked against proper traditional methods to make sure the output files match.
+* Robust codebase, currently tested on **41** albums of all shapes and sizes (including a few [witch.house](https://user-images.githubusercontent.com/2212907/70855973-1935b080-1e99-11ea-8d0b-b25ea975d8b3.png) albums for good measure). All features have been double and triple-checked against proper traditional methods to make sure the output files match.
 
 * All features operate as fast as possible while still maintaining proper output. This program will always trade speed for accuracy. Check "Necessary Limitations/Quirks" below for inconvenient aspects of that decision.
 
+<div align="center">
+    <a href="url"><img src="https://user-images.githubusercontent.com/2212907/70855887-d921fe00-1e97-11ea-86bb-fc74cd9af6d2.png"></a>
+</div>
 
 ## Basic Usage
 
@@ -92,9 +93,9 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 * [AlbumArt.exe](https://sourceforge.net/projects/album-art/) (Windows)
     * Opens AlbumArtDownloader with the artist+album filled out (from the "guessed" textboxes above) and pointed at the temp folder
 
-* `bs1770gain` (Linux) or [bs1770gain.exe](https://sourceforge.net/projects/bs1770gain/files/bs1770gain/0.5.1/) (Windows)
+* `bs1770gain` (Linux) or [bs1770gain.exe](http://bs1770gain.sourceforge.net/) (Windows)
 	* Scans ReplayGain data for tracks.
-	* **!!! - Note that versions below 0.6.6 are incompatible with this program and/or have major bugs**, which is very unfortunate as it will take a long time for this version to propogate through the slower linux repos. Manual compilation is recommended in these cases. More information in the "Necessary Limitations" section.
+	* **!!! - Note that versions below 0.6.6 are incompatible with this program and/or have major bugs**, which is unfortunate as it will take a long time for this version to propogate through the slower linux repos. Manual compilation is recommended in these cases. More information in the "Necessary Limitations" section.
 
 * `gifsicle` (Linux) or [gifsicle.exe](https://github.com/kohler/gifsicle) ([Unofficial binaries](https://eternallybored.org/misc/gifsicle/)) (Windows)
 	* Compresses and strips metadata from .gifs
