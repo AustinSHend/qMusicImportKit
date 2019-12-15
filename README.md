@@ -95,7 +95,7 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 * `bs1770gain` (Linux) or [bs1770gain.exe](http://bs1770gain.sourceforge.net/) (Windows)
 	* Scans ReplayGain data for tracks.
-	* **!!! - Note that versions below 0.6.6 are incompatible with this program and/or have major bugs**, which is unfortunate as it will take a long time for this version to propogate through the slower linux repos. Manual compilation is recommended in these cases. More information in the "Necessary Limitations" section.
+	* **!!! - Note that versions below 0.6.6 are incompatible with this program and/or have major bugs**, which is unfortunate as it will take a long time for this version to propogate through the slower Linux repos. Manual compilation is recommended in these cases. More information in the "Necessary Limitations" section.
 
 * `gifsicle` (Linux) or [gifsicle.exe](https://github.com/kohler/gifsicle) ([Unofficial binaries](https://eternallybored.org/misc/gifsicle/)) (Windows)
 	* Compresses and strips metadata from .gifs
