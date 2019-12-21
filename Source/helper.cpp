@@ -20,24 +20,34 @@ void getBashPATH() {
 }
 #endif
 
+// Remove target directory
 bool removeDir(const QString &dirName)
 {
     bool result = true;
     QDir dir(dirName);
 
     if(dir.exists(dirName)) {
+        // For every file nested in the directory
         foreach (QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            
+            // If it's a directory
             if(info.isDir()) {
+                // Recursively remove it
                 result = removeDir(info.absoluteFilePath());
             }
+            // If it's a file
             else {
+                // Remove it
                 result = QFile::remove(info.absoluteFilePath());
             }
 
+            // If one of the operations failed, return false
             if(!result) {
-                return result;
+                return false;
             }
         }
+
+        // Remove the directory
         result = dir.rmdir(dirName);
     }
 
@@ -47,7 +57,7 @@ bool removeDir(const QString &dirName)
 // Get the parent folder of a path
 QDir getNearestParent(QDir pathDir)
 {
-    // Don't do anything if this is the root or the path is empty
+    // Preclude root and empty paths
     if(!pathDir.isRoot() && pathDir.path() != ".") {
         // Back up one folder
         pathDir.setPath(QDir::cleanPath(pathDir.filePath(QStringLiteral(".."))));
@@ -89,7 +99,7 @@ QString cleanString (QString input, QString ignoredChars) {
     // For each of 0-31 (control characters) and 127 (delete character) unicode symbols
     foreach (QChar currentChar, input) {
         if(currentChar.unicode() <= 31 || currentChar.unicode() == 127) {
-            // Replace the illegal character with a '-'
+            // Remove the illegal character
             input = input.remove(currentChar);
         }
     }
@@ -151,7 +161,7 @@ QString checkInstalledProgram(QString location, QString programName, bool useSet
     }
 
     // On Linux, use the "which" command to print out where the program lives on the OS, and if it finds it, return the name
-    // This uses the user's PATH variable
+    // This uses the user's PATH variable due to getBashPATH
 #if defined(Q_OS_LINUX)
     if (system(qPrintable("which " + programName + ">> /dev/null")) == 0) {
         return programName;
@@ -204,71 +214,29 @@ QString parseNamingSyntax(QString syntax, QString codec, QString preset, QString
     // Prettier metadata to use for folder/filenames
     // MP3
     if(codec == "MP3") {
-        if (preset == "245kbps VBR (V0)") {
-            preset = "V0";
-        }
-        else if (preset == "225kbps VBR (V1)") {
-            preset = "V1";
-        }
-        else if (preset == "190kbps VBR (V2)") {
-            preset = "V2";
-        }
-        else if (preset == "175kbps VBR (V3)") {
-            preset = "V3";
-        }
-        else if (preset == "165kbps VBR (V4)") {
-            preset = "V4";
-        }
-        else if (preset == "130kbps VBR (V5)") {
-            preset = "V5";
-        }
-        else if (preset == "115kbps VBR (V6)") {
-            preset = "V6";
-        }
-        else if (preset == "100kbps VBR (V7)") {
-            preset = "V7";
-        }
-        else if (preset == "85kbps VBR (V8)") {
-            preset = "V8";
-        }
-        else if (preset == "65kbps VBR (V9)") {
-            preset = "V9";
-        }
-        else if (preset == "320kbps CBR") {
-            preset = "320";
-        }
-        else if (preset == "256kbps CBR") {
-            preset = "256";
-        }
-        else if (preset == "192kbps CBR") {
-            preset = "192";
-        }
-        else if (preset == "128kbps CBR") {
-            preset = "128";
-        }
-        else if (preset == "64kbps CBR") {
-            preset = "64";
-        }
+        if (preset == "245kbps VBR (V0)")      {preset = "V0";}
+        else if (preset == "225kbps VBR (V1)") {preset = "V1";}
+        else if (preset == "190kbps VBR (V2)") {preset = "V2";}
+        else if (preset == "175kbps VBR (V3)") {preset = "V3";}
+        else if (preset == "165kbps VBR (V4)") {preset = "V4";}
+        else if (preset == "130kbps VBR (V5)") {preset = "V5";}
+        else if (preset == "115kbps VBR (V6)") {preset = "V6";}
+        else if (preset == "100kbps VBR (V7)") {preset = "V7";}
+        else if (preset == "85kbps VBR (V8)")  {preset = "V8";}
+        else if (preset == "65kbps VBR (V9)")  {preset = "V9";}
+        else if (preset == "320kbps CBR")      {preset = "320";}
+        else if (preset == "256kbps CBR")      {preset = "256";}
+        else if (preset == "192kbps CBR")      {preset = "192";}
+        else if (preset == "128kbps CBR")      {preset = "128";}
+        else if (preset == "64kbps CBR")       {preset = "64";}
     }
     else if (codec == "Opus") {
-        if (preset == "192kbps VBR") {
-            preset = "192";
-        }
-        else if (preset == "160kbps VBR") {
-            preset = "160";
-        }
-        else if (preset == "128kbps VBR") {
-            preset = "128";
-        }
-        else if (preset == "96kbps VBR") {
-            preset = "96";
-        }
-        else if (preset == "64kbps VBR") {
-            preset = "64";
-        }
-        else if (preset == "32kbps VBR") {
-            preset = "32";
-        }
+        if (preset == "192kbps VBR")      {preset = "192";}
+        else if (preset == "160kbps VBR") {preset = "160";}
+        else if (preset == "128kbps VBR") {preset = "128";}
+        else if (preset == "96kbps VBR")  {preset = "96";}
+        else if (preset == "64kbps VBR")  {preset = "64";}
+        else if (preset == "32kbps VBR")  {preset = "32";}
     }
 
     // Move through the input string, matching syntax, pushing its equivalent into a formatted string, then deleting the matched portion of the original and loop
@@ -315,7 +283,7 @@ QString parseNamingSyntax(QString syntax, QString codec, QString preset, QString
 
             // Smartbit
             else if(currentElement == "smartbit") {
-                // Lossless smartbit, uses bit-depth + "-" + a short sample rate, e.g. "16-44" for 16-bit 44100kHz FLAC or "24-96" for 24-bit 96000kHz FLAC
+                // Lossless smartbit, uses bit-depth + "-" + a short sample rate, e.g. "16-44" for 16-bit 44100Hz FLAC or "24-96" for 24-bit 96000Hz FLAC
                 if(codec == "FLAC") {
                     if(futureBPS != -1 && futureSampleRate != -1) {
                         formattedString += QString::number(futureBPS) + "-" + QString::number(futureSampleRate).mid(0, 2);
@@ -999,51 +967,21 @@ QString convertToMP3(QString inputFLAC, conversionParameters_t *conversionParame
     arguments.clear();
     arguments << "-h";
 
-    if(conversionParameters->presetInput == "245kbps VBR (V0)") {
-        arguments << "-V" << "0";
-    }
-    else if(conversionParameters->presetInput == "225kbps VBR (V1)") {
-        arguments << "-V" << "1";
-    }
-    else if(conversionParameters->presetInput == "190kbps VBR (V2)") {
-        arguments << "-V" << "2";
-    }
-    else if(conversionParameters->presetInput == "175kbps VBR (V3)") {
-        arguments << "-V" << "3";
-    }
-    else if(conversionParameters->presetInput == "165kbps VBR (V4)") {
-        arguments << "-V" << "4";
-    }
-    else if(conversionParameters->presetInput == "130kbps VBR (V5)") {
-        arguments << "-V" << "5";
-    }
-    else if(conversionParameters->presetInput == "115kbps VBR (V6)") {
-        arguments << "-V" << "6";
-    }
-    else if(conversionParameters->presetInput == "100kbps VBR (V7)") {
-        arguments << "-V" << "7";
-    }
-    else if(conversionParameters->presetInput == "85kbps VBR (V8)") {
-        arguments << "-V" << "8";
-    }
-    else if(conversionParameters->presetInput == "65kbps VBR (V9)") {
-        arguments << "-V" << "9";
-    }
-    else if(conversionParameters->presetInput == "320kbps CBR") {
-        arguments << "-b" << "320";
-    }
-    else if(conversionParameters->presetInput == "256kbps CBR") {
-        arguments << "-b" << "256";
-    }
-    else if(conversionParameters->presetInput == "192kbps CBR") {
-        arguments << "-b" << "192";
-    }
-    else if(conversionParameters->presetInput == "128kbps CBR") {
-        arguments << "-b" << "128";
-    }
-    else if(conversionParameters->presetInput == "64kbps CBR") {
-        arguments << "-b" << "64";
-    }
+    if(conversionParameters->presetInput == "245kbps VBR (V0)")      {arguments << "-V" << "0";}
+    else if(conversionParameters->presetInput == "225kbps VBR (V1)") {arguments << "-V" << "1";}
+    else if(conversionParameters->presetInput == "190kbps VBR (V2)") {arguments << "-V" << "2";}
+    else if(conversionParameters->presetInput == "175kbps VBR (V3)") {arguments << "-V" << "3";}
+    else if(conversionParameters->presetInput == "165kbps VBR (V4)") {arguments << "-V" << "4";}
+    else if(conversionParameters->presetInput == "130kbps VBR (V5)") {arguments << "-V" << "5";}
+    else if(conversionParameters->presetInput == "115kbps VBR (V6)") {arguments << "-V" << "6";}
+    else if(conversionParameters->presetInput == "100kbps VBR (V7)") {arguments << "-V" << "7";}
+    else if(conversionParameters->presetInput == "85kbps VBR (V8)")  {arguments << "-V" << "8";}
+    else if(conversionParameters->presetInput == "65kbps VBR (V9)")  {arguments << "-V" << "9";}
+    else if(conversionParameters->presetInput == "320kbps CBR")      {arguments << "-b" << "320";}
+    else if(conversionParameters->presetInput == "256kbps CBR")      {arguments << "-b" << "256";}
+    else if(conversionParameters->presetInput == "192kbps CBR")      {arguments << "-b" << "192";}
+    else if(conversionParameters->presetInput == "128kbps CBR")      {arguments << "-b" << "128";}
+    else if(conversionParameters->presetInput == "64kbps CBR")       {arguments << "-b" << "64";}
 
     arguments << QDir::toNativeSeparators(outputWAV) << QDir::toNativeSeparators(outputMP3);
 
