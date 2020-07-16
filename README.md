@@ -132,7 +132,7 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 ## Necessary Limitations/Quirks
 
 * Album Art Downloading
-    * Linux does not have what I would consider a proper alternative to AlbumArtDownloader (nor does AAD play nicely with WINE), so album art downloading is limited to the Windows version of this application. [SACAD](https://github.com/desbma/sacad) is the closest alternative at the moment but is missing a countless number of features which I would consider bare minimum. Using AlbumArtDownloader in a VM pointed to your Temp folder is the best solution until progress is made on this front.
+    * AlbumArtDownloader is now able to be run with WINE by following specific instructions at [hydrogenaud.io](https://hydrogenaud.io/index.php?topic=57392.msg984669#msg984669). This will be integrated with qMIK more closely as an option as soon as I get the free time.
 
 * BS1770GAIN:
 	* Versions of BS1770GAIN <= 0.6.5 have various problems that prevent them from being used with this program.
