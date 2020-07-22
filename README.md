@@ -12,7 +12,7 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 * Genuine LAME header info is preserved by exporting all tags from a .flac, decoding to .wav (destroying all tags in the process), encoding the .wav to .mp3 through LAME, and reapplying original tags to the .mp3 (including preserving unlimited custom tags through TXXX frame manipulation).
 
-* BS1770GAIN-powered ReplayGain data on all formats, using the ITU-R BS.1770 algorithm with EBU (-23 dB) reference loudness and true peak calculation.
+* Loudgain-powered ReplayGain data on all formats, using the ITU-R BS.1770 algorithm with EBU (-23 dB) reference loudness and true peak calculation.
 
 * Custom Excel exports for database keeping.
 
@@ -90,12 +90,15 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 ## Plugins
 
-* [AlbumArt.exe](https://sourceforge.net/projects/album-art/) (Windows)
+* [AlbumArt (WINE)](https://hydrogenaud.io/index.php?topic=57392.msg984669#msg984669) (Linux) or [AlbumArt.exe](https://sourceforge.net/projects/album-art/) (Windows)
     * Opens AlbumArtDownloader with the artist+album filled out (from the "guessed" textboxes above) and pointed at the temp folder
+    * AlbumArtDownloader works under Linux with specific configurations.
+    * When asked for a custom command in qMIK, the format `WINEPREFIX=/home/user/.wineAAD wine /home/user/.wineAAD/drive_c/Program\ Files/AlbumArtDownloader/AlbumArt.exe` is confirmed working on my machine. Adjust for your own install locations and username.
 
-* `bs1770gain` (Linux) or [bs1770gain.exe](http://bs1770gain.sourceforge.net/) (Windows)
+* `loudgain` (Linux) or [loudgain (WSL)](https://github.com/Moonbase59/loudgain) (Windows)
 	* Scans ReplayGain data for tracks.
-	* **!!! - Note that versions below 0.6.6 are incompatible with this program and/or have major bugs**, which is unfortunate as it will take a long time for this version to propogate through the slower Linux repos. Manual compilation is recommended in these cases. More information in the "Necessary Limitations" section.
+	* Loudgain only works under WSL on Windows. Installation instructions are available via their Github page.
+	* qMIK will automatically use your default WSL distro's `loudgain` installation, so make sure it is callable there if you want it to be detected.
 
 * `gifsicle` (Linux) or [gifsicle.exe](https://github.com/kohler/gifsicle) ([Unofficial binaries](https://eternallybored.org/misc/gifsicle/)) (Windows)
 	* Compresses and strips metadata from .gifs
@@ -131,19 +134,11 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 ## Necessary Limitations/Quirks
 
-* Album Art Downloading
-    * AlbumArtDownloader is now able to be run with WINE by following specific instructions at [hydrogenaud.io](https://hydrogenaud.io/index.php?topic=57392.msg984669#msg984669). This will be integrated with qMIK more closely as an option as soon as I get the free time.
-
-* BS1770GAIN:
-	* Versions of BS1770GAIN <= 0.6.5 have various problems that prevent them from being used with this program.
-    * 0.5.2 is the only other version that is stable and can theoretically work with this program, but it calculates true peaks with an outdated method and has slightly different output formats that this program is no longer equipped to read.
-    * This program used to use 0.5.2, but now that problems introduced in versions 0.6.0 (true peak bug) and 0.6.2 (album/collection input broken) have been fixed with 0.6.5 and 0.6.6 respectively, 0.6.6 and above is recommended, along with its new output format.
-
 * MP3 Conversions:
     * Simpler methods of MP3 conversion (e.g. FFmpeg, which uses LAME as well) strip the LAME header info from the output MP3 and thus there is no (easy) way to tell if an unknown MP3 file that you find used LAME in its creation or an inferior tool (such as FhG). For being courteous to others (and our future selves), we take extra steps to preserve this data. Manual decoding to .wav and encoding to .mp3 is actually faster than using an FFmpeg implementation, but destroys tags in the process so we handle that manually.
 
 * ReplayGain:
-    * BS1770GAIN's ReplayGain implementation cannot be multithreaded and includes relatively intensive true peak calculation. This means ReplayGain calculation takes a frustratingly *large* portion of the overall conversion process time. Disable ReplayGain if you don't need it or speed is a priority.
+    * ReplayGain album-mode calculation cannot be multithreaded and includes relatively intensive true peak calculation. This means the ReplayGain process takes a frustratingly *large* portion of the overall conversion process time. Disable ReplayGain if you don't need it or speed is a priority.
 
 ## Compilation Dependencies
 
