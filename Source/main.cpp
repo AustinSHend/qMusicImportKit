@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("qMusicImportKit");
 
 #if defined(Q_OS_LINUX)
-    // Set Qt's path variable to include user-defined locations from their Bash configuration
-    getBashPATH();
+    // Set Qt's path variable to include user-defined locations from their shell configuration
+    getShellPATH();
 #endif
 
 

@@ -27,7 +27,9 @@ struct conversionParameters_t {
     QString codecInput;
 };
 
-void getBashPATH();
+void getShellPATH();
+QString getWSLPath(QString winLocation);
+bool isWSLLoudgainAvailable();
 bool removeDir(const QString &dirName);
 QDir getNearestParent(QDir pathDir);
 QString cleanString(QString input, QString ignoredChars = "");

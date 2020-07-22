@@ -1,22 +1,79 @@
 #include "helper.h"
 
 #if defined(Q_OS_LINUX)
-// Get user's Bash-manipulated PATH environment variable (including .bashrc, .profile, etc)
-void getBashPATH() {
+// Get user's shell-manipulated PATH environment variable (including .bashrc, .zshrc, .profile, etc)
+void getShellPATH() {
+    // Get the current user's name
+    QString name = qgetenv("USER");
+    if(name.isEmpty()) {
+        name = qgetenv("USERNAME");
+    }
+
+    // Process to pull the user's default shell out of /etc/passwd using awk
+    QProcess defaultShellExtractionProcess;
+    defaultShellExtractionProcess.setProgram("sh");
+    defaultShellExtractionProcess.setArguments({"-c", "awk -F: -v user=\"" + name + "\" \'$1 == user {print $NF}\' /etc/passwd"});
+    defaultShellExtractionProcess.start();
+    defaultShellExtractionProcess.waitForFinished(-1);
+    // Read the default shell out of the output. In the format of /bin/sh or /bin/bash etc
+    QString defaultShell = defaultShellExtractionProcess.readAllStandardOutput().trimmed();
+
     QProcess pathExtractionProcess;
-    pathExtractionProcess.setProgram("bash");
-    // Bash arguments
-    // -i: interactive mode (necessary for Bash to load the environment variable that we need)
+    pathExtractionProcess.setProgram(defaultShell);
+    // Tested and working shells: bash, zsh, fish, sh, tcsh, csh, ksh, dash
+    // If you're using a hipster shell that's not on here, you better hope it uses standard shell syntax
+    // -i: interactive mode (necessary for some shells to load the environment variable that we need)
     // -c: input a custom command
-    // "printenv PATH": prints Bash's interpretation of the PATH environment variable to stdout
+    // "printenv PATH": prints the shell's interpretation of the PATH environment variable to stdout
     pathExtractionProcess.setArguments({"-i", "-c", "printenv PATH"});
 
     // Start and wait
     pathExtractionProcess.start();
     pathExtractionProcess.waitForFinished(-1);
 
-    // Set Qt's PATH variable to the Bash-manipulated PATH variable, overwriting it
+    // Set Qt's PATH variable to the shell-manipulated PATH variable, overwriting it
     qputenv("PATH", pathExtractionProcess.readAllStandardOutput().trimmed());
+}
+#endif
+
+#if defined(Q_OS_WIN)
+// Get the WSL location of a Windows file (C:\Users -> /mnt/c/Users)
+QString getWSLPath(QString winLocation) {
+    // Get the drive letter (C:\ -> c)
+    QString drive = winLocation.at(0).toLower();
+    // Remove the first three characters of the file location (C:\Users -> Users)
+    winLocation = winLocation.remove(0,3);
+    // Convert to the proper WSL path notation (/mnt/ + c + / + Users), and replace backslashes with forward slashes
+    QString WSLLocation = QString("/mnt/" + drive + "/" + winLocation.replace("\\", "/"));
+
+    return WSLLocation;
+}
+#endif
+
+#if defined(Q_OS_WIN)
+// Checks if Loudgain is available via WSL
+bool isWSLLoudgainAvailable() {
+    QProcess WSLProcess;
+    WSLProcess.setProgram("wsl");
+    QStringList arguments;
+    // Use the built-in "which" command to locate loudgain. It's not actually important that we get a specific path, just that we get anything back at all
+    arguments << "which" << "loudgain";
+    WSLProcess.setArguments(arguments);
+
+    // Start and wait
+    // Note that initializing WSL is slow, so a native binary will eventually help performance
+    WSLProcess.start();
+    WSLProcess.waitForFinished(-1);
+
+    // If we got something back
+    if(WSLProcess.readAllStandardOutput().trimmed() != "") {
+        // Loudgain available
+        return true;
+    }
+    else {
+        // Loudgain unavailable
+        return false;
+    }
 }
 #endif
 
@@ -161,9 +218,9 @@ QString checkInstalledProgram(QString location, QString programName, bool useSet
     }
 
     // On Linux, use the "which" command to print out where the program lives on the OS, and if it finds it, return the name
-    // This uses the user's PATH variable due to getBashPATH
+    // This uses the user's PATH variable
 #if defined(Q_OS_LINUX)
-    if (system(qPrintable("which " + programName + ">> /dev/null")) == 0) {
+    if(programName != NULL && system(qPrintable("which " + programName + ">> /dev/null")) == 0) {
         return programName;
     }
 #endif
@@ -962,10 +1019,12 @@ QString convertToMP3(QString inputFLAC, conversionParameters_t *conversionParame
     LAMEProcess.setProgram(programLocation);
 
     // LAME arguments
-    // -h: high quality mode
+    // -q 0: use highest quality/slowest algorithms
+    // -V: variable bitrate mode (VBR)
+    // -b: constant bitrate mode (CBR)
     // -o: output location
     arguments.clear();
-    arguments << "-h";
+    arguments << "q" << "0";
 
     if(conversionParameters->presetInput == "245kbps VBR (V0)")      {arguments << "-V" << "0";}
     else if(conversionParameters->presetInput == "225kbps VBR (V1)") {arguments << "-V" << "1";}

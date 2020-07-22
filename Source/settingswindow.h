@@ -36,7 +36,7 @@ private slots:
     void openDefaultFLACFileChooser();
     void openDefaultLAMEFileChooser();
     void openDefaultOpusFileChooser();
-    void openDefaultBS1770GAINFileChooser();
+    void openDefaultReplaygainFileChooser();
     void openDefaultGifsicleFileChooser();
     void openDefaultJPEGOptimFileChooser();
     void openDefaultOxiPNGFileChooser();
@@ -47,7 +47,7 @@ private slots:
     void settingsAccept();
     void updateConversionOptions();
     void updateFLACOptions();
-    void updateBS1770GAINOptions();
+    void updateReplaygainOptions();
     void updateCompressionOptions(bool compressorDetected = false);
     void updateGifsicleOptions();
     void updateJPEGOptimOptions();

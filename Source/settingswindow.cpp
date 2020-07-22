@@ -13,9 +13,19 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     // Set the placeholder text of the DefaultSyntaxComboBox manually, as it can't be changed in the UI designer
     ui->DefaultSyntaxComboBox->lineEdit()->setPlaceholderText("Output Folder + File Name (syntax in tooltip)");
 
-    // If the program is being run from Windows, set the tagger to display as "MP3Tag" instead of "PuddleTag"
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_LINUX)
+    // AAD must be explicitly launched with a custom wine command, not a file
+    ui->DefaultAlbumArtFetcherFileChooserButton->setVisible(false);
+#elif defined(Q_OS_WIN)
+    // Set the tagger to display as "MP3Tag" instead of "PuddleTag"
     ui->DefaultTaggerLineEdit->setPlaceholderText("MP3Tag Binary Location");
+
+    // Set AlbumArtDownloader to function as a binary instead of a WINE execution
+    ui->DefaultAlbumArtFetcherLineEdit->setPlaceholderText("AlbumArtDownloader Binary Location");
+
+    // Set the Loudgain input to be disabled, as Windows users need to have it be autodetected through WSL
+    ui->DefaultReplaygainLineEdit->setEnabled(false);
+    ui->DefaultReplaygainFileChooserButton->setVisible(false);
 #endif
 
     // Read in user settings
@@ -85,16 +95,27 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
         }
     }
 
-    // BS1770GAIN check
-    tempProgramLocation = checkInstalledProgram("sDefaultBS1770GAINLocation", "bs1770gain");
+// Linux Loudgain check is normal
+#if defined(Q_OS_LINUX)
+    tempProgramLocation = checkInstalledProgram("sDefaultLoudgainLocation", "loudgain");
     if(tempProgramLocation != "") {
-        if(tempProgramLocation != "bs1770gain") {
-            ui->DefaultBS1770GAINLineEdit->setText(QDir::toNativeSeparators(tempProgramLocation));
+        if(tempProgramLocation != "loudgain") {
+            ui->DefaultReplaygainLineEdit->setText(QDir::toNativeSeparators(tempProgramLocation));
         }
         else {
-            ui->DefaultBS1770GAINLineEdit->setText(QString("(BS1770GAIN autodetected)"));
+            ui->DefaultReplaygainLineEdit->setText(QString("(Loudgain autodetected)"));
         }
     }
+// Windows Loudgain needs to be detected through WSL
+#elif defined(Q_OS_WIN)
+    if(isWSLLoudgainAvailable()) {
+        ui->DefaultReplaygainLineEdit->setText(QString("(Loudgain autodetected (WSL))"));
+    }
+    else {
+        ui->DefaultReplaygainLineEdit->setText(QString("(Loudgain not detected (WSL))"));
+    }
+#endif
+
 
     // Gifsicle check
     tempProgramLocation = checkInstalledProgram("sDefaultGifsicleLocation", "gifsicle");
@@ -147,8 +168,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
         ui->DefaultAlbumArtFetcherLineEdit->setText(QDir::toNativeSeparators(tempProgramLocation));
     }
 #elif defined(Q_OS_LINUX)
-    ui->DefaultAlbumArtFetcherLineEdit->setVisible(false);
-    ui->DefaultAlbumArtFetcherFileChooserButton->setVisible(false);
+    ui->DefaultAlbumArtFetcherLineEdit->setText(MIKSettings.value("sDefaultAlbumArtFetcherLocation", "").toString());
 #endif
 
     // Spek check
@@ -175,7 +195,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     updateFLACOptions();
 //    updateConversionOptions(); Necessary but updateFLACOptions also calls this so not needed for now
-    updateBS1770GAINOptions();
+    updateReplaygainOptions();
     updateGifsicleOptions();
     updateJPEGOptimOptions();
     updateOxiPNGOptions();
@@ -280,14 +300,14 @@ void SettingsWindow::openDefaultOpusFileChooser() {
     updateConversionOptions();
 }
 
-void SettingsWindow::openDefaultBS1770GAINFileChooser() {
+void SettingsWindow::openDefaultReplaygainFileChooser() {
 #if defined(Q_OS_LINUX)
-    fileChooser(ui->DefaultBS1770GAINLineEdit);
+    fileChooser(ui->DefaultReplaygainLineEdit);
 #elif defined(Q_OS_WIN)
-    fileChooser(ui->DefaultBS1770GAINLineEdit, "BS1770GAIN Binary (bs1770gain.exe)");
+    fileChooser(ui->DefaultReplaygainLineEdit, "Loudgain Binary (loudgain.exe)");
 #endif
-    // Manually trigger a check for BS1770GAIN capability
-    updateBS1770GAINOptions();
+    // Manually trigger a check for Replaygain capability
+    updateReplaygainOptions();
 }
 
 void SettingsWindow::openDefaultGifsicleFileChooser() {
@@ -404,9 +424,11 @@ void SettingsWindow::settingsAccept() {
     if(ui->DefaultOpusLineEdit->text() == "" || QFileInfo(ui->DefaultOpusLineEdit->text()).isFile()) {
         MIKSettings.setValue("sDefaultOpusLocation", QDir::toNativeSeparators(ui->DefaultOpusLineEdit->text()));
     }
-    if(ui->DefaultBS1770GAINLineEdit->text() == "" || QFileInfo(ui->DefaultBS1770GAINLineEdit->text()).isFile()) {
-        MIKSettings.setValue("sDefaultBS1770GAINLocation", QDir::toNativeSeparators(ui->DefaultBS1770GAINLineEdit->text()));
+#if defined(Q_OS_LINUX)
+    if(ui->DefaultReplaygainLineEdit->text() == "" || QFileInfo(ui->DefaultReplaygainLineEdit->text()).isFile()) {
+        MIKSettings.setValue("sDefaultLoudgainLocation", QDir::toNativeSeparators(ui->DefaultReplaygainLineEdit->text()));
     }
+#endif
     if(ui->DefaultGifsicleLineEdit->text() == "" || QFileInfo(ui->DefaultGifsicleLineEdit->text()).isFile()) {
         MIKSettings.setValue("sDefaultGifsicleLocation", QDir::toNativeSeparators(ui->DefaultGifsicleLineEdit->text()));
     }
@@ -419,7 +441,12 @@ void SettingsWindow::settingsAccept() {
     if(ui->DefaultSoXLineEdit->text() == "" || QFileInfo(ui->DefaultSoXLineEdit->text()).isFile()) {
         MIKSettings.setValue("sDefaultSoXLocation", QDir::toNativeSeparators(ui->DefaultSoXLineEdit->text()));
     }
+#if defined(Q_OS_WIN)
     if(ui->DefaultAlbumArtFetcherLineEdit->text() == "" || QFileInfo(ui->DefaultAlbumArtFetcherLineEdit->text()).isFile()) {
+#elif defined(Q_OS_LINUX)
+    // Always save the WINE command; you're on your own for sanity checking
+    if(true) {
+#endif
         MIKSettings.setValue("sDefaultAlbumArtFetcherLocation", QDir::toNativeSeparators(ui->DefaultAlbumArtFetcherLineEdit->text()));
     }
     if(ui->DefaultSpectrogramAnalysisLineEdit->text() == "" || QFileInfo(ui->DefaultSpectrogramAnalysisLineEdit->text()).isFile()) {
@@ -510,10 +537,16 @@ void SettingsWindow::updateFLACOptions() {
     updateConversionOptions();
 }
 
-// Automatically enable BS1770GAIN capabilities when a valid BS1770GAIN binary is found
-void SettingsWindow::updateBS1770GAINOptions() {
+// Automatically enable Replaygain capabilities when a valid Loudgain binary is found
+void SettingsWindow::updateReplaygainOptions() {
     QSettings MIKSettings;
-    if(checkInstalledProgram(ui->DefaultBS1770GAINLineEdit->text(), "bs1770gain", false) != "") {
+// Linux Loudgain check is normal
+#if defined(Q_OS_LINUX)
+    if(checkInstalledProgram(ui->DefaultReplaygainLineEdit->text(), "loudgain", false) != "") {
+// Windows Loudgain needs to be detected through WSL
+#elif defined(Q_OS_WIN)
+    if(isWSLLoudgainAvailable()) {
+#endif
         if(!ui->DefaultRGCheckBox->isEnabled()) {
             ui->DefaultRGCheckBox->setChecked(MIKSettings.value("bDefaultRG", true).toBool());
             ui->DefaultRGCheckBox->setEnabled(true);

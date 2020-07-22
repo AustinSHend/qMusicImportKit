@@ -171,7 +171,7 @@
     </rect>
    </property>
    <property name="placeholderText">
-    <string>Album Art Fetcher Binary Location</string>
+    <string>AlbumArtDownloader WINE Command</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="DefaultSpectrogramAnalysisLineEdit">
@@ -364,7 +364,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>ReplayGain enabled by default (requires BS1770GAIN)</string>
+    <string>ReplayGain enabled by default (requires Loudgain)</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="DefaultCopySpecificFileTypesCheckBox">
@@ -534,7 +534,7 @@
     <string>e.g. *.jpg; *.log; *.cue; *.pdf</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="DefaultBS1770GAINLineEdit">
+  <widget class="QLineEdit" name="DefaultReplaygainLineEdit">
    <property name="geometry">
     <rect>
      <x>500</x>
@@ -543,11 +543,14 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
    <property name="placeholderText">
-    <string>BS1770GAIN Binary Location</string>
+    <string>Loudgain Binary Location</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="DefaultBS1770GAINFileChooserButton">
+  <widget class="QPushButton" name="DefaultReplaygainFileChooserButton">
    <property name="geometry">
     <rect>
      <x>880</x>
@@ -779,8 +782,8 @@
   <tabstop>DefaultOpusFileChooserButton</tabstop>
   <tabstop>DefaultLAMELineEdit</tabstop>
   <tabstop>DefaultLAMEFileChooserButton</tabstop>
-  <tabstop>DefaultBS1770GAINLineEdit</tabstop>
-  <tabstop>DefaultBS1770GAINFileChooserButton</tabstop>
+  <tabstop>DefaultReplaygainLineEdit</tabstop>
+  <tabstop>DefaultReplaygainFileChooserButton</tabstop>
   <tabstop>DefaultSoXLineEdit</tabstop>
   <tabstop>DefaultSoXFileChooserButton</tabstop>
   <tabstop>DefaultGifsicleLineEdit</tabstop>
@@ -1009,22 +1012,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>DefaultBS1770GAINFileChooserButton</sender>
-   <signal>pressed()</signal>
-   <receiver>SettingsWindow</receiver>
-   <slot>openDefaultBS1770GAINFileChooser()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>922</x>
-     <y>129</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>834</x>
-     <y>97</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>DefaultGifsicleFileChooserButton</sender>
    <signal>pressed()</signal>
    <receiver>SettingsWindow</receiver>
@@ -1137,22 +1124,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>DefaultBS1770GAINLineEdit</sender>
-   <signal>editingFinished()</signal>
-   <receiver>SettingsWindow</receiver>
-   <slot>updateBS1770GAINOptions()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>641</x>
-     <y>118</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>656</x>
-     <y>104</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>DefaultGifsicleLineEdit</sender>
    <signal>editingFinished()</signal>
    <receiver>SettingsWindow</receiver>
@@ -1232,6 +1203,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>DefaultReplaygainLineEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>SettingsWindow</receiver>
+   <slot>updateReplaygainOptions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>562</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>542</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>DefaultReplaygainFileChooserButton</sender>
+   <signal>pressed()</signal>
+   <receiver>SettingsWindow</receiver>
+   <slot>openDefaultReplaygainFileChooser()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>939</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>809</x>
+     <y>101</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsAccept()</slot>
@@ -1245,19 +1248,19 @@
   <slot>openDefaultAlbumArtFetcherFileChooser()</slot>
   <slot>openDefaultSpectrogramAnalysisFileChooser()</slot>
   <slot>openDefaultTaggerFileChooser()</slot>
-  <slot>openDefaultBS1770GAINFileChooser()</slot>
   <slot>openDefaultGifsicleFileChooser()</slot>
   <slot>openDefaultOxiPNGFileChooser()</slot>
   <slot>openDefaultJPEGOptimFileChooser()</slot>
   <slot>openDefaultXLSXSheetFileChooser()</slot>
   <slot>updateFLACOptions()</slot>
   <slot>updateConversionOptions()</slot>
-  <slot>updateBS1770GAINOptions()</slot>
   <slot>updateCompressionOptions()</slot>
   <slot>updateGifsicleOptions()</slot>
   <slot>updateJPEGOptimOptions()</slot>
   <slot>updateOxiPNGOptions()</slot>
   <slot>updateXLSXOptions()</slot>
   <slot>updateSoXOptions()</slot>
+  <slot>updateReplaygainOptions()</slot>
+  <slot>openDefaultReplaygainFileChooser()</slot>
  </slots>
 </ui>

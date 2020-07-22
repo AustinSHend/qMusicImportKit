@@ -90,14 +90,14 @@ void MainWindow::applyUserSettings() {
     // AlbumArtDownloader check
 #if defined(Q_OS_WIN)
     if(checkInstalledProgram("sDefaultAlbumArtFetcherLocation") != "") {
+#elif defined(Q_OS_LINUX)
+    if(MIKSettings.value("sDefaultAlbumArtFetcherLocation", "").toString() != "") {
+#endif
         ui->AlbumArtButton->setEnabled(true);
     }
     else {
         ui->AlbumArtButton->setEnabled(false);
     }
-#elif defined(Q_OS_LINUX)
-    ui->AlbumArtButton->setVisible(false);
-#endif
 
     // Spek check
     if(checkInstalledProgram("sDefaultSpectrogramAnalysisLocation", "spek") != "") {
@@ -115,8 +115,13 @@ void MainWindow::applyUserSettings() {
         ui->TagButton->setEnabled(false);
     }
 
-    // BS1770GAIN check
-    if(checkInstalledProgram("sDefaultBS1770GAINLocation", "bs1770gain") != "") {
+// Linux Loudgain check is normal
+#if defined(Q_OS_LINUX)
+    if(checkInstalledProgram("sDefaultLoudgainLocation", "loudgain") != "") {
+// Windows Loudgain needs to be detected through WSL
+#elif defined(Q_OS_WIN)
+    if(isWSLLoudgainAvailable()) {
+#endif
         ui->ReplayGainCheckBox->setEnabled(true);
         ui->ReplayGainCheckBox->setChecked(MIKSettings.value("bDefaultRG", true).toBool());
         ui->ReplayGainCheckBox->setText("Apply ReplayGain");
@@ -124,7 +129,7 @@ void MainWindow::applyUserSettings() {
     else {
         ui->ReplayGainCheckBox->setEnabled(false);
         ui->ReplayGainCheckBox->setChecked(false);
-        ui->ReplayGainCheckBox->setText("Apply ReplayGain (requires BS1770GAIN)");
+        ui->ReplayGainCheckBox->setText("Apply ReplayGain (requires Loudgain)");
     }
 
     // Read in more user settings
@@ -596,8 +601,10 @@ void MainWindow::openTagger() {
 }
 
 // Opens AlbumArtDownloader, pointed at the temp folder
-// Linux currently has no suitable alternative to AAD
 void MainWindow::openAlbumArtFetcher() {
+    // Read in user settings
+    QSettings MIKSettings;
+
     // Return if either the artist or album textbox is empty
     if(ui->ArtistLineEdit->text().isEmpty() || ui->AlbumLineEdit->text().isEmpty()) {
         QMessageBox::warning(this, "Warning", "No artist or album specified.", QMessageBox::Ok);
@@ -614,13 +621,24 @@ void MainWindow::openAlbumArtFetcher() {
 
     // Initiate AAD process
     QProcess albumArtFetcherProcess;
+    // AAD Arguments
+    // -ar: artist to query
+    // -al: album to query
+    // -p: path to save the resultant download to
+    QStringList arguments;
+#if defined(Q_OS_WIN)
     QString programLocation = checkInstalledProgram("sDefaultAlbumArtFetcherLocation");
     if(programLocation == "") {
         return;
     }
+    arguments << "-ar" << ui->ArtistLineEdit->text() << "-al" << ui->AlbumLineEdit->text() << "-p" << QDir::toNativeSeparators(tempDir.path() + "/folder.%extension%");
+#elif defined(Q_OS_LINUX)
+    // On Linux we run with sh and -c (command) so it can handle commands more robustly than we can mimick
+    QString programLocation = "sh";
+    // We need to quote and escape the arguments manually for sh to understand
+    arguments << "-c" << MIKSettings.value("sDefaultAlbumArtFetcherLocation", "").toString() + " -ar \"" + ui->ArtistLineEdit->text() + "\" -al \"" + ui->AlbumLineEdit->text() + "\" -p \"" + QDir::toNativeSeparators(tempDir.path() + "/folder.%extension%\"");
+#endif
     albumArtFetcherProcess.setProgram(programLocation);
-    QStringList arguments;
-    arguments << "-ar" << ui->ArtistLineEdit->text() << "-al" << ui->AlbumLineEdit->text() << "-p" << QDir::toNativeSeparators(tempDir.path()) + "\\folder.%extension%";
     albumArtFetcherProcess.setArguments(arguments);
 
     albumArtFetcherProcess.startDetached();
@@ -710,132 +728,43 @@ void MainWindow::calculateReplayGain (QStringList inputFLACs) {
     // Sort the files to ensure we process them in the right order
     inputFLACs.sort();
 
-    QProcess BS1770GAINProcess;
-    QString programLocation = checkInstalledProgram("sDefaultBS1770GAINLocation", "bs1770gain");
+    QProcess LoudgainProcess;
+    // Linux uses normal Loudgain
+#if defined(Q_OS_LINUX)
+    QString programLocation = checkInstalledProgram("sDefaultLoudgainLocation", "loudgain");
     if(programLocation == "") {
         return;
     }
-    BS1770GAINProcess.setProgram(programLocation);
+    // Windows requires WSL Loudgain as there is no native binary (yet)
+#elif defined(Q_OS_WIN)
+    QString programLocation = "wsl";
+#endif
+    LoudgainProcess.setProgram(programLocation);
 
-    // BS1770GAIN arguments
-    // --ebu: sets reference loudness to -23.00 dB
-    // -t: calculates true peaks
-    // -f: outputs a log file containing the results, which we later use as data
+    // Loudgain arguments
+    // -a: calculates album gain
+    // -k: prevents clipping
+    // -s e: extra information calculation (Reference loudness and range)
+    // -d -5: decrease gain by 5dB in order to comply with EBU standards (-23.0 LUFS offset)
     QStringList arguments;
-    arguments << "--ebu" << "-t";
+#if defined(Q_OS_WIN)
+    arguments << "loudgain";
+#endif
+    arguments << "-a" << "-k" << "-s" << "e" << "-d" << "-5";
     foreach (QString currentFLAC, inputFLACs) {
+#if defined(Q_OS_LINUX)
         arguments << QDir::toNativeSeparators(currentFLAC);
+#elif defined(Q_OS_WIN)
+        // Windows needs special handholding to convert from a NT path to a WSL path (C:\Users -> /mnt/c/Users)
+        arguments << getWSLPath(currentFLAC);
+#endif
     }
 
-    // Temp/MIKRG.txt, a log file that contains information on the generated ReplayGain data. We scan this later for data to put in the files.
-    QString RGTxtPath = QDir::tempPath() + "/" + "MIKRG.txt";
-    arguments << "-f" << QDir::toNativeSeparators(RGTxtPath);
-    BS1770GAINProcess.setArguments(arguments);
+    LoudgainProcess.setArguments(arguments);
 
     // Start and wait
-    BS1770GAINProcess.start();
-    BS1770GAINProcess.waitForFinished(-1);
-
-    // Open MIKRG.txt in read-only mode and point a stream to it
-    QFile RGTxtFile(RGTxtPath);
-    RGTxtFile.open(QIODevice::ReadOnly);
-    QTextStream inputStream(&RGTxtFile);
-
-    // QString to hold each line as it's read in
-    QString line = "";
-
-    // QStringList to hold each part of the line, separated by whitespace
-    QStringList elements;
-
-    foreach (QString currentFLAC, inputFLACs) {
-        // Open a TagFile and PropertyMap of each input file
-        // Linux only wants StdStrings, while Windows prefers StdWStrings (char encoding errors possible if Windows uses StdStrings)
-#if defined(Q_OS_LINUX)
-        TagLib::FLAC::File currentFLACTagFile(currentFLAC.toStdString().data());
-#elif defined(Q_OS_WIN)
-        TagLib::FLAC::File currentFLACTagFile(currentFLAC.toStdWString().data());
-#endif
-        TagLib::PropertyMap currentFLACTagMap = currentFLACTagFile.properties();
-
-        // Skip identifying track line ("[1/13] "example.flac":")
-        inputStream.readLine();
-
-        // Read in the first line (integrated)
-        line = inputStream.readLine();
-
-        // Clear elements and put the line into it, broken up by whitespace
-        elements.clear();
-        elements += line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-
-        // Set REPLAYGAIN_TRACK_GAIN to the scanned data, replacing existing data
-        currentFLACTagMap.replace("REPLAYGAIN_TRACK_GAIN", QStringToTString(QString(elements[6] + " dB")));
-
-        // Read in the next line (true peak)
-        line = inputStream.readLine();
-
-        // Clear elements and put the line into it, broken up by whitespace
-        elements.clear();
-        elements += line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-
-        // Set REPLAYGAIN_TRACK_PEAK to the scanned data, replacing existing data
-        currentFLACTagMap.replace("REPLAYGAIN_TRACK_PEAK", QStringToTString(QString(elements[5])));
-        // We manually insert the correct reference loudness, which needs to be correct for Opus's RG calculation (matches other scanners' format as well)
-        // Formula to get this number is "107 dB + Reference Loudness." In our case we are using EBU reference loudness which is -23.00 dB.
-        currentFLACTagMap.replace("REPLAYGAIN_REFERENCE_LOUDNESS", TagLib::String("84.00 dB"));
-
-        // Apply the map and save
-        currentFLACTagFile.setProperties(currentFLACTagMap);
-        currentFLACTagFile.save();
-    }
-
-    // Variables to hold the parsed album gain and peak, as we're going to apply it to multiple files
-    QString albumGain = "";
-    QString albumPeak = "";
-
-    // Skip identifying "[ALBUM]:" line
-    inputStream.readLine();
-
-    // Read in first line (integrated)
-    line = inputStream.readLine();
-
-    // Clear elements and put the line into it, broken up by whitespace
-    elements.clear();
-    elements += line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-
-    // Store the albumGain, for later use
-    albumGain = elements[4];
-
-    // Read in first line (integrated)
-    line = inputStream.readLine();
-
-    // Clear elements and put the line into it, broken up by whitespace
-    elements.clear();
-    elements += line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-
-    // Store the albumPeak, for later use
-    albumPeak = elements[5];
-
-    foreach (QString currentFLAC, inputFLACs) {
-        // Open a TagFile and PropertyMap of each input file
-        // Linux only wants StdStrings, while Windows prefers StdWStrings (char encoding errors possible if Windows uses StdStrings)
-#if defined(Q_OS_LINUX)
-        TagLib::FLAC::File currentFLACTagFile(currentFLAC.toStdString().data());
-#elif defined(Q_OS_WIN)
-        TagLib::FLAC::File currentFLACTagFile(currentFLAC.toStdWString().data());
-#endif
-        TagLib::PropertyMap currentFLACTagMap = currentFLACTagFile.properties();
-
-        // Set REPLAYGAIN_ALBUM_GAIN and REPLAYGAIN_ALBUM_PEAK to our stored values, replacing existing data
-        currentFLACTagMap.replace("REPLAYGAIN_ALBUM_GAIN", QStringToTString(QString(albumGain.mid(0, albumGain.indexOf('.')+3) + " dB")));
-        currentFLACTagMap.replace("REPLAYGAIN_ALBUM_PEAK", QStringToTString(QString(albumPeak.mid(0, albumPeak.indexOf('.')+7))));
-
-        // Apply the map and save
-        currentFLACTagFile.setProperties(currentFLACTagMap);
-        currentFLACTagFile.save();
-    }
-
-    // Remove MIKRG.txt
-    RGTxtFile.remove();
+    LoudgainProcess.start();
+    LoudgainProcess.waitForFinished(-1);
 }
 
 // Conversion controller to send each file and its parameters to the correct encoder with multi-threading
