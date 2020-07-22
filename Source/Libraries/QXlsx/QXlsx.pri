@@ -1,7 +1,9 @@
-# QXlsx.pri 
+# QXlsx.pri
 
 QT += core
 QT += gui-private
+
+CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -16,7 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 isEmpty(QXLSX_PARENTPATH) {
     message( 'QXLSX_PARENTPATH is empty. use default value.' )
-    QXLSX_PARENTPATH = ../
+    QXLSX_PARENTPATH = $$PWD/../
 } else {
     message( 'QXLSX_PARENTPATH is not empty.' )
     message( $${QXLSX_PARENTPATH} )
@@ -24,7 +26,7 @@ isEmpty(QXLSX_PARENTPATH) {
 
 isEmpty(QXLSX_HEADERPATH) {
     message( 'QXLSX_HEADERPATH is empty. use default value.' )
-    QXLSX_HEADERPATH = ../QXlsx/header/
+    QXLSX_HEADERPATH = $$PWD/../QXlsx/header/
 } else {
     message( 'QXLSX_HEADERPATH is not empty.' )
     message( $${QXLSX_HEADERPATH} )
@@ -32,13 +34,13 @@ isEmpty(QXLSX_HEADERPATH) {
 
 isEmpty(QXLSX_SOURCEPATH) {
     message( 'QXLSX_SOURCEPATH is empty. use default value.' )
-    QXLSX_SOURCEPATH = ../QXlsx/source/
+    QXLSX_SOURCEPATH = $$PWD/../QXlsx/source/
 } else {
     message( 'QXLSX_SOURCEPATH is not empty.' )
     message( $${QXLSX_SOURCEPATH} )
 }
 
-INCLUDEPATH += .
+INCLUDEPATH += $$PWD
 INCLUDEPATH += $${QXLSX_PARENTPATH}
 INCLUDEPATH += $${QXLSX_HEADERPATH}
 

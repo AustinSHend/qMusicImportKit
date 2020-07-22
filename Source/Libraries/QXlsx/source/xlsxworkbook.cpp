@@ -1,5 +1,13 @@
 // xlsxworkbook.cpp
 
+#include <QtGlobal>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
+#include <QFile>
+#include <QBuffer>
+#include <QDir>
+#include <QtDebug>
+
 #include "xlsxworkbook.h"
 #include "xlsxworkbook_p.h"
 #include "xlsxsharedstrings_p.h"
@@ -11,13 +19,7 @@
 #include "xlsxformat_p.h"
 #include "xlsxmediafile_p.h"
 #include "xlsxutility_p.h"
-
-#include <QXmlStreamWriter>
-#include <QXmlStreamReader>
-#include <QFile>
-#include <QBuffer>
-#include <QDir>
-#include <QtDebug>
+#include "xlsxchart.h"
 
 QT_BEGIN_NAMESPACE_XLSX
 
@@ -520,7 +522,7 @@ void Workbook::saveToXmlFile(QIODevice *device) const
 
     if (!d->definedNamesList.isEmpty()) {
         writer.writeStartElement(QStringLiteral("definedNames"));
-        foreach (XlsxDefineNameData data, d->definedNamesList) {
+        for (const XlsxDefineNameData &data : d->definedNamesList) {
             writer.writeStartElement(QStringLiteral("definedName"));
             writer.writeAttribute(QStringLiteral("name"), data.name);
             if (!data.comment.isEmpty())
@@ -608,7 +610,13 @@ bool Workbook::loadFromXmlFile(QIODevice *device)
                  AbstractSheet *sheet = addSheet(name, sheetId, type);
                  sheet->setSheetState(state);
                  QString strFilePath = filePath();
-                 const QString fullPath = QDir::cleanPath(splitPath(strFilePath)[0] + QLatin1String("/") + relationship.target);
+
+                 // const QString fullPath = QDir::cleanPath(splitPath(strFilePath).constFirst() + QLatin1String("/") + relationship.target);
+                 QString str = *( splitPath(strFilePath).begin() );
+                 str = str + QLatin1String("/");
+                 str = str + relationship.target;
+                 const QString fullPath = QDir::cleanPath( str );
+
                  sheet->setFilePath(fullPath);
              }
              else if (reader.name() == QLatin1String("workbookPr"))
@@ -651,7 +659,12 @@ bool Workbook::loadFromXmlFile(QIODevice *device)
                  XlsxRelationship relationship = d->relationships->getRelationshipById(rId);
 
                  QSharedPointer<SimpleOOXmlFile> link(new SimpleOOXmlFile(F_LoadFromExists));
-                 const QString fullPath = QDir::cleanPath(splitPath(filePath())[0] +QLatin1String("/")+ relationship.target);
+
+                 QString str = *( splitPath(filePath()).begin() );
+                 str = str + QLatin1String("/");
+                 str = str + relationship.target;
+                 const QString fullPath = QDir::cleanPath( str );
+
                  link->setFilePath(fullPath);
                  d->externalLinks.append(link);
              } else if (reader.name() == QLatin1String("definedName")) {
@@ -690,14 +703,19 @@ QList<QSharedPointer<MediaFile> > Workbook::mediaFiles() const
 void Workbook::addMediaFile(QSharedPointer<MediaFile> media, bool force)
 {
     Q_D(Workbook);
-    if (!force) {
-        for (int i=0; i<d->mediaFiles.size(); ++i) {
-            if (d->mediaFiles[i]->hashKey() == media->hashKey()) {
+
+    if (!force)
+    {
+        for (int i=0; i<d->mediaFiles.size(); ++i)
+        {
+            if (d->mediaFiles[i]->hashKey() == media->hashKey())
+            {
                 media->setIndex(i);
                 return;
             }
         }
     }
+
     media->setIndex(d->mediaFiles.size());
     d->mediaFiles.append(media);
 }

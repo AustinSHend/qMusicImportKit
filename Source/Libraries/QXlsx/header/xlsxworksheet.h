@@ -1,14 +1,4 @@
-//--------------------------------------------------------------------
-//
-// QXlsx
-// MIT License
-// https://github.com/j2doll/QXlsx
-//
-// QtXlsx
-// https://github.com/dbzhang800/QtXlsxWriter
-// http://qtxlsx.debao.me/
-// MIT License
-//
+// xlsxworksheet.h
 
 #ifndef XLSXWORKSHEET_H
 #define XLSXWORKSHEET_H
@@ -91,6 +81,10 @@ public:
     bool writeDateTime(const CellReference &row_column, const QDateTime& dt, const Format &format=Format());
     bool writeDateTime(int row, int column, const QDateTime& dt, const Format &format=Format());
 
+    // dev67
+    bool writeDate(const CellReference &row_column, const QDate& dt, const Format &format=Format());
+    bool writeDate(int row, int column, const QDate& dt, const Format &format=Format());
+
     bool writeTime(const CellReference &row_column, const QTime& t, const Format &format=Format());
     bool writeTime(int row, int column, const QTime& t, const Format &format=Format());
 
@@ -103,7 +97,10 @@ public:
     Cell *cellAt(const CellReference &row_column) const;
     Cell *cellAt(int row, int column) const;
 
-    bool insertImage(int row, int column, const QImage &image);
+    int insertImage(int row, int column, const QImage &image);
+    bool getImage(int imageIndex, QImage& img);
+    uint getImageCount();
+
     Chart *insertChart(int row, int column, const QSize &size);
 
     bool mergeCells(const CellRange &range, const Format &format=Format());

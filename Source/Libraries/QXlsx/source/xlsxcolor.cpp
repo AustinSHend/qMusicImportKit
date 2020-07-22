@@ -1,22 +1,14 @@
-//xlsxcolor.cpp
+// xlsxcolor.cpp
 
-// QXlsx
-// MIT License
-// https://github.com/j2doll/QXlsx
-//
-// QtXlsx
-// https://github.com/dbzhang800/QtXlsxWriter
-// http://qtxlsx.debao.me/
-// MIT License
-
-#include "xlsxcolor_p.h"
-#include "xlsxstyles_p.h"
-#include "xlsxutility_p.h"
-
+#include <QtGlobal>
 #include <QDataStream>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QDebug>
+
+#include "xlsxcolor_p.h"
+#include "xlsxstyles_p.h"
+#include "xlsxutility_p.h"
 
 QT_BEGIN_NAMESPACE_XLSX
 
@@ -132,17 +124,23 @@ QColor XlsxColor::fromARGBString(const QString &c)
 {
     Q_ASSERT(c.length() == 8);
     QColor color;
-    color.setAlpha(c.mid(0, 2).toInt(0, 16));
-    color.setRed(c.mid(2, 2).toInt(0, 16));
-    color.setGreen(c.mid(4, 2).toInt(0, 16));
-    color.setBlue(c.mid(6, 2).toInt(0, 16));
+    color.setAlpha(c.midRef(0, 2).toInt(0, 16));
+    color.setRed(c.midRef(2, 2).toInt(0, 16));
+    color.setGreen(c.midRef(4, 2).toInt(0, 16));
+    color.setBlue(c.midRef(6, 2).toInt(0, 16));
     return color;
 }
 
 QString XlsxColor::toARGBString(const QColor &c)
 {
     QString color;
+
+#if QT_VERSION >= 0x050600 // Qt 5.6 or over
+    color = QString::asprintf("%02X%02X%02X%02X", c.alpha(), c.red(), c.green(), c.blue());
+#else
     color.sprintf("%02X%02X%02X%02X", c.alpha(), c.red(), c.green(), c.blue());
+#endif
+
     return color;
 }
 
@@ -198,7 +196,7 @@ QDebug operator<<(QDebug dbg, const XlsxColor &c)
     else if (c.isIndexedColor())
         dbg.nospace() << "XlsxColor(indexed," << c.indexedColor() << ")";
     else if (c.isThemeColor())
-        dbg.nospace() << "XlsxColor(theme," << c.themeColor().join(QLatin1Char(':')) << ")";
+        dbg.nospace() << "XlsxColor(theme," << c.themeColor().join(QLatin1String(":")) << ")";
 
     return dbg.space();
 }

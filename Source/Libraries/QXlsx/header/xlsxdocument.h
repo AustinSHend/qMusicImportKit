@@ -41,7 +41,9 @@ public:
 	QVariant read(const CellReference &cell) const;
 	QVariant read(int row, int col) const;
 	
-	bool insertImage(int row, int col, const QImage &image);
+    int insertImage(int row, int col, const QImage &image);
+    bool getImage(int imageIndex, QImage& img);
+    uint getImageCount();
 	
 	Chart *insertChart(int row, int col, const QSize &size);
 	
@@ -111,10 +113,22 @@ public:
 	bool saveAs(const QString &xlsXname) const;
 	bool saveAs(QIODevice *device) const;
 
+	// copy style from one xlsx file to other
+	static bool copyStyle(const QString &from, const QString &to);
+
 	bool isLoadPackage() const; 
 	bool load() const; // equals to isLoadPackage()
 
 	bool changeimage(int filenoinmidea,QString newfile); // add by liufeijin20181025
+
+    bool autosizeColumnWidth(const CellRange &range);
+    bool autosizeColumnWidth(int column);
+    bool autosizeColumnWidth(int colFirst, int colLast);
+    bool autosizeColumnWidth(void);
+
+private:
+    QMap<int, int> getMaximalColumnWidth(int firstRow=1, int lastRow=INT_MAX);
+
 
 private:
     Q_DISABLE_COPY(Document) // Disables the use of copy constructors and

@@ -1,4 +1,4 @@
-﻿// xlsxcell.h
+// xlsxcell.h
 
 #ifndef QXLSX_XLSXCELL_H
 #define QXLSX_XLSXCELL_H

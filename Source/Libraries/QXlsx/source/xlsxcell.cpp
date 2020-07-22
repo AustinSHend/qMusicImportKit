@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include <QtGlobal>
+#include <QDebug>
 #include <QDateTime>
 #include <QDate>
 #include <QTime>
@@ -23,9 +25,13 @@ CellPrivate::CellPrivate(Cell *p) :
 }
 
 CellPrivate::CellPrivate(const CellPrivate * const cp)
-	: value(cp->value), formula(cp->formula), cellType(cp->cellType)
-	, format(cp->format), richString(cp->richString), parent(cp->parent),
-	styleNumber(cp->styleNumber)
+    : parent(cp->parent)
+    , cellType(cp->cellType)
+    , value(cp->value)
+    , formula(cp->formula)
+    , format(cp->format)
+    , richString(cp->richString)
+    , styleNumber(cp->styleNumber)
 {
 
 }
@@ -115,7 +121,6 @@ QVariant Cell::readValue() const
 	ret = d->value;
 
 	Format fmt = this->format();
-	int noFormatIndex = fmt.numberFormatIndex(); 
 
 	if (isDateTime())
 	{
@@ -247,11 +252,12 @@ bool Cell::isDateTime() const
 
 	Cell::CellType cellType = d->cellType;
     double dValue = d->value.toDouble(); // number
-	QString strValue = d->value.toString().toUtf8(); 
+//	QString strValue = d->value.toString().toUtf8();
 	bool isValidFormat = d->format.isValid();
     bool isDateTimeFormat = d->format.isDateTimeFormat(); // datetime format
 
-    if ( // cellType == NumberType ||
+    // dev67
+    if ( cellType == NumberType ||
          cellType == DateType ||
          cellType == CustomType )
     {
@@ -305,9 +311,12 @@ bool Cell::isRichString() const
 {
 	Q_D(const Cell);
 
-	if (d->cellType != SharedStringType && d->cellType != InlineStringType
-			&& d->cellType != StringType)
+    if ( d->cellType != SharedStringType &&
+            d->cellType != InlineStringType &&
+            d->cellType != StringType )
+    {
 		return false;
+    }
 
 	return d->richString.isRichString();
 }

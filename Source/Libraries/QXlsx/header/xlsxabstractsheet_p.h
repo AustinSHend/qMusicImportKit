@@ -1,4 +1,4 @@
-//
+// xlsxabstractsheet_p/h
 
 #ifndef XLSXABSTRACTSHEET_P_H
 #define XLSXABSTRACTSHEET_P_H
@@ -11,6 +11,7 @@
 
 #include "xlsxabstractsheet.h"
 #include "xlsxabstractooxmlfile_p.h"
+#include "xlsxdrawing_p.h"
 
 QT_BEGIN_NAMESPACE_XLSX
 
