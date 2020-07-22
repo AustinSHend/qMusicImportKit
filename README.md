@@ -92,10 +92,10 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 * [AlbumArt (WINE)](https://hydrogenaud.io/index.php?topic=57392.msg984669#msg984669) (Linux) or [AlbumArt.exe](https://sourceforge.net/projects/album-art/) (Windows)
     * Opens AlbumArtDownloader with the artist+album filled out (from the "guessed" textboxes above) and pointed at the temp folder
-    * AlbumArtDownloader works under Linux with specific configurations.
+    * AlbumArtDownloader works under Linux with specific configurations. See the linked hydrogenaud.io thread for more details.
     * When asked for a custom command in qMIK, the format `WINEPREFIX=/home/user/.wineAAD wine /home/user/.wineAAD/drive_c/Program\ Files/AlbumArtDownloader/AlbumArt.exe` is confirmed working on my machine. Adjust for your own install locations and username.
 
-* `loudgain` (Linux) or [loudgain (WSL)](https://github.com/Moonbase59/loudgain) (Windows)
+* `loudgain` (Linux) or [Loudgain (WSL)](https://github.com/Moonbase59/loudgain) (Windows)
 	* Scans ReplayGain data for tracks.
 	* Loudgain only works under WSL on Windows. Installation instructions are available via their Github page.
 	* qMIK will automatically use your default WSL distro's `loudgain` installation, so make sure it is callable there if you want it to be detected.
