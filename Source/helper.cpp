@@ -1024,7 +1024,7 @@ QString convertToMP3(QString inputFLAC, conversionParameters_t *conversionParame
     // -b: constant bitrate mode (CBR)
     // -o: output location
     arguments.clear();
-    arguments << "q" << "0";
+    arguments << "-q" << "0";
 
     if(conversionParameters->presetInput == "245kbps VBR (V0)")      {arguments << "-V" << "0";}
     else if(conversionParameters->presetInput == "225kbps VBR (V1)") {arguments << "-V" << "1";}
