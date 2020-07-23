@@ -1022,7 +1022,6 @@ QString convertToMP3(QString inputFLAC, conversionParameters_t *conversionParame
     // -q 0: use highest quality/slowest algorithms
     // -V: variable bitrate mode (VBR)
     // -b: constant bitrate mode (CBR)
-    // -o: output location
     arguments.clear();
     arguments << "-q" << "0";
 
