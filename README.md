@@ -14,8 +14,6 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 * Loudgain-powered ReplayGain data on all formats, using the ITU-R BS.1770 algorithm with EBU (-23 dB) reference loudness and true peak calculation.
 
-* Custom Excel exports for database keeping.
-
 * Quicklinks to Discogs and MusicBrainz using automatic artist+album metadata from the input files.
 
 * Integration with AlbumArtDownloader (multi-source album art fetching), PuddleTag/Mp3tag (powerful tagging software), and Spek (spectral analysis).
@@ -65,7 +63,6 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 8. Choose options: Most options are straightforward.
     * Copy specific filetypes will copy all matching files in the temp folder to the output folder. Regex and wildcards are supported.
-    * Append parsed data to Excel sheet will add the parsed syntax (minus the filename) to an Excel sheet. Optionally, you can include a log score (for how well the CD was ripped) and notes.
 
 9. Choose conversion option:
     * FLAC:
@@ -149,5 +146,3 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 ## Credits
 
 * Uses [TagLib](https://taglib.org/) to assist with tag reading.
-
-* Uses [Qxlsx](https://github.com/QtExcel/QXlsx) to assist with spreadsheet writing.

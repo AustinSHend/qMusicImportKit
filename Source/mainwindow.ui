@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>696</width>
-    <height>482</height>
+    <height>461</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>696</width>
-    <height>482</height>
+    <height>461</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>696</width>
-    <height>482</height>
+    <height>461</height>
    </size>
   </property>
   <property name="font">
@@ -430,7 +430,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>380</y>
+      <y>360</y>
       <width>680</width>
       <height>23</height>
      </rect>
@@ -443,7 +443,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>400</y>
+      <y>380</y>
       <width>680</width>
       <height>23</height>
      </rect>
@@ -459,7 +459,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>430</y>
+      <y>410</y>
       <width>79</width>
       <height>23</height>
      </rect>
@@ -472,7 +472,7 @@
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>430</y>
+      <y>410</y>
       <width>220</width>
       <height>23</height>
      </rect>
@@ -566,61 +566,13 @@
     <property name="geometry">
      <rect>
       <x>330</x>
-      <y>430</y>
+      <y>410</y>
       <width>170</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
      <string>Convert</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="XLSXSheetCheckBox">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>360</y>
-      <width>230</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Insert parsed data into .xlsx sheet</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="XLSXLogScoreLineEdit">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>360</y>
-      <width>70</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="dragEnabled">
-     <bool>true</bool>
-    </property>
-    <property name="placeholderText">
-     <string>Log score</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="XLSXNotesLineEdit">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>360</y>
-      <width>360</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="dragEnabled">
-     <bool>true</bool>
-    </property>
-    <property name="placeholderText">
-     <string>Notes</string>
     </property>
    </widget>
   </widget>
@@ -630,7 +582,7 @@
      <x>0</x>
      <y>0</y>
      <width>696</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -703,9 +655,6 @@
   <tabstop>CopyContentsLineEdit</tabstop>
   <tabstop>RenameLogCueCheckBox</tabstop>
   <tabstop>CompressImagesCheckBox</tabstop>
-  <tabstop>XLSXSheetCheckBox</tabstop>
-  <tabstop>XLSXLogScoreLineEdit</tabstop>
-  <tabstop>XLSXNotesLineEdit</tabstop>
   <tabstop>DeleteTempFolderCheckBox</tabstop>
   <tabstop>ConvertOpenFolderCheckBox</tabstop>
   <tabstop>ConvertToComboBox</tabstop>

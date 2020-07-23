@@ -9,6 +9,7 @@
 #include <QSettings>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QThreadPool>
+#include <QImage>
 
 #include <attachedpictureframe.h>
 #include <flacfile.h>
@@ -16,8 +17,6 @@
 #include <mpegfile.h>
 #include <opusfile.h>
 #include <tpropertymap.h>
-
-#include "xlsxdocument.h"
 
 struct conversionParameters_t {
     QStringList inputFLACs;
@@ -46,6 +45,5 @@ void convertWAV(QString inputWAV);
 QString convertToFLAC(QString inputFLAC, conversionParameters_t *conversionParameters, int futureBPS, int futureSampleRate);
 QString convertToOpus(QString inputFLAC, conversionParameters_t *conversionParameters);
 QString convertToMP3(QString inputFLAC, conversionParameters_t *conversionParameters);
-bool insertInWorkbook (QString lastFolder, QString logScore, QString notes);
 
 #endif // HELPER_H

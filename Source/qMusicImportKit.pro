@@ -59,14 +59,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += taglib
 
-# QXlsx code for Application Qt project
-QXLSX_PARENTPATH=./Libraries/QXlsx/         # current QXlsx path is .
-QXLSX_HEADERPATH=./Libraries/QXlsx/header/  # current QXlsx header path is ./header/
-QXLSX_SOURCEPATH=./Libraries/QXlsx/source/  # current QXlsx source path is ./source/
-include(./Libraries/QXlsx/QXlsx.pri)
-INCLUDEPATH += ./Libraries/QXlsx
-DEPENDPATH += ./Libraries/QXlsx
-
 # Windows include libraries
 win32: LIBS += -L'C:/Program Files (x86)/taglib/lib/' -ltag
 win32: INCLUDEPATH += 'C:/Program Files (x86)/taglib/include/taglib'

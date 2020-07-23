@@ -30,9 +30,6 @@ struct uiSelections_t {
     QString copyContents;
     bool renameLogCueEnabled;
     bool compressImagesEnabled;
-    bool XLSXEnabled;
-    QString XLSXLogScore;
-    QString XLSXNotes;
     bool deleteTempEnabled;
     bool openFolderEnabled;
     QString codecInput;
@@ -88,7 +85,6 @@ private slots:
     void on_ConvertToComboBox_currentIndexChanged(const QString &format);
     void convertInitialize();
     void on_CopyContentsCheckBox_stateChanged(int state);
-    void on_XLSXSheetCheckBox_stateChanged(int state);
 };
 
 #endif // MAINWINDOW_H

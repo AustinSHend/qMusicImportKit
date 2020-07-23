@@ -51,8 +51,6 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->DefaultCompressGIFCheckBox->setChecked(MIKSettings.value("bDefaultCompressGIF", false).toBool());
     ui->DefaultCompressJPGCheckBox->setChecked(MIKSettings.value("bDefaultCompressJPG", false).toBool());
     ui->DefaultCompressPNGCheckBox->setChecked(MIKSettings.value("bDefaultCompressPNG", false).toBool());
-    ui->DefaultXLSXSheetCheckBox->setChecked(MIKSettings.value("bDefaultXLSXSheet", false).toBool());
-    ui->DefaultXLSXSheetLineEdit->setText(MIKSettings.value("sDefaultXLSXSheetLocation", "").toString());
     ui->DefaultDeleteSourceFolderCheckBox->setChecked(MIKSettings.value("bDefaultDeleteSourceFolder", true).toBool());
     ui->DefaultOpenFolderCheckBox->setChecked(MIKSettings.value("bDefaultOpenFolder", false).toBool());
     ui->DefaultConvertFormatComboBox->setCurrentText(MIKSettings.value("sDefaultConvertFormat", "FLAC").toString());
@@ -199,7 +197,6 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     updateGifsicleOptions();
     updateJPEGOptimOptions();
     updateOxiPNGOptions();
-    updateXLSXOptions();
 }
 
 SettingsWindow::~SettingsWindow()
@@ -262,12 +259,6 @@ void SettingsWindow::openDefaultTempFolderChooser() {
 
 void SettingsWindow::openDefaultOutputFolderChooser() {
     folderChooser(ui->DefaultOutputLineEdit);
-}
-
-void SettingsWindow::openDefaultXLSXSheetFileChooser() {
-    fileChooser(ui->DefaultXLSXSheetLineEdit, "Microsoft Excel Open XML Spreadsheet (*.xlsx)");
-    // Manually trigger a check for XLSX capability
-    updateXLSXOptions();
 }
 
 void SettingsWindow::openDefaultFLACFileChooser() {
@@ -404,16 +395,6 @@ void SettingsWindow::settingsAccept() {
     MIKSettings.setValue("bDefaultOpenFolder", ui->DefaultOpenFolderCheckBox->isChecked());
     MIKSettings.setValue("sDefaultConvertFormat", ui->DefaultConvertFormatComboBox->currentText());
     MIKSettings.setValue("sDefaultConvertPreset", ui->DefaultConvertPresetComboBox->currentText());
-
-    // Don't allow XLSX to be enabled if the XLSX file is invalid
-    MIKSettings.setValue("bDefaultXLSXSheet", false);
-    if(ui->DefaultXLSXSheetLineEdit->text() == "" || QFileInfo(ui->DefaultXLSXSheetLineEdit->text()).isFile()) {
-        MIKSettings.setValue("sDefaultXLSXSheetLocation", QDir::toNativeSeparators(ui->DefaultXLSXSheetLineEdit->text()));
-
-        if(ui->DefaultXLSXSheetCheckBox->isChecked() && ui->DefaultXLSXSheetLineEdit->text() != "") {
-            MIKSettings.setValue("bDefaultXLSXSheet", ui->DefaultXLSXSheetCheckBox->isChecked());
-        }
-    }
 
     if(ui->DefaultFLACLineEdit->text() == "" || QFileInfo(ui->DefaultFLACLineEdit->text()).isFile()) {
         MIKSettings.setValue("sDefaultFLACLocation", QDir::toNativeSeparators(ui->DefaultFLACLineEdit->text()));
@@ -638,21 +619,6 @@ void SettingsWindow::updateOxiPNGOptions() {
 // Manually trigger a refresh of the preset combo-box to account for possible new SoX capabilities
 void SettingsWindow::updateSoXOptions() {
     updateConvertPresetsOnFormatChange(ui->DefaultConvertFormatComboBox->currentText());
-}
-
-// Automatically enable XLSX capabilities when a valid XLSX file is found
-void SettingsWindow::updateXLSXOptions() {
-    QSettings MIKSettings;
-    if(QFileInfo(ui->DefaultXLSXSheetLineEdit->text()).isFile()) {
-        if(!ui->DefaultXLSXSheetCheckBox->isEnabled()) {
-            ui->DefaultXLSXSheetCheckBox->setChecked(MIKSettings.value("bDefaultXLSXSheet", false).toBool());
-            ui->DefaultXLSXSheetCheckBox->setEnabled(true);
-        }
-    }
-    else {
-        ui->DefaultXLSXSheetCheckBox->setEnabled(false);
-        ui->DefaultXLSXSheetCheckBox->setChecked(false);
-    }
 }
 
 // Runs when the conversion format is changed, in order to update available options in the preset QComboBox

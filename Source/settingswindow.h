@@ -32,7 +32,6 @@ private slots:
     void openDefaultInputFolderChooser();
     void openDefaultTempFolderChooser();
     void openDefaultOutputFolderChooser();
-    void openDefaultXLSXSheetFileChooser();
     void openDefaultFLACFileChooser();
     void openDefaultLAMEFileChooser();
     void openDefaultOpusFileChooser();
@@ -53,7 +52,6 @@ private slots:
     void updateJPEGOptimOptions();
     void updateOxiPNGOptions();
     void updateSoXOptions();
-    void updateXLSXOptions();
     void updateConvertPresetsOnFormatChange(const QString &format);
 };
 

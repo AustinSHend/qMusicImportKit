@@ -13,10 +13,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // Set the placeholder text of the SyntaxComboBox manually, as it can't be changed in the UI designer
     ui->SyntaxComboBox->lineEdit()->setPlaceholderText("Output Folder + File Name (syntax in tooltip)");
 
-    // Manually hide two XLSX-related QLineEdits, as they can't be hidden in the UI designer
-    ui->XLSXLogScoreLineEdit->setVisible(false);
-    ui->XLSXNotesLineEdit->setVisible(false);
-
     // If the program is being run from Windows, set the tagger to display as "MP3Tag" instead of "PuddleTag"
 #if defined(Q_OS_WIN)
     ui->TagButton->setText("MP3Tag");
@@ -137,31 +133,12 @@ void MainWindow::applyUserSettings() {
     ui->CopyContentsLineEdit->setText(MIKSettings.value("sDefaultSpecificFileTypesText", "").toString());
     ui->CopyContentsCheckBox->setChecked(MIKSettings.value("bDefaultSpecificFileTypes", false).toBool());
 
-    // Reset XLSX LogScore/Notes
-    ui->XLSXLogScoreLineEdit->setText("");
-    ui->XLSXNotesLineEdit->setText("");
-
     // Manually trigger the logic for checking/unchecking CopyContentsCheckBox for dynamic disabling of other elements
     if(ui->CopyContentsCheckBox->isChecked() == true) {
         on_CopyContentsCheckBox_stateChanged(2);
     }
     else {
         on_CopyContentsCheckBox_stateChanged(0);
-    }
-
-    // Only enable the XLSX checkbox if the XLSX sheet from the settings exists
-    if(QFileInfo(MIKSettings.value("sDefaultXLSXSheetLocation", "").toString()).exists()) {
-        ui->XLSXSheetCheckBox->setEnabled(true);
-
-        ui->XLSXSheetCheckBox->setChecked(MIKSettings.value("bDefaultXLSXSheet", false).toBool());
-
-        // Manually trigger the logic for checking/unchecking XLSXSheetCheckBox for dynamic disabling of other elements
-        if(ui->XLSXSheetCheckBox->isChecked() == true) {
-            on_XLSXSheetCheckBox_stateChanged(2);
-        }
-        else {
-            on_XLSXSheetCheckBox_stateChanged(0);
-        }
     }
 
     // Set the conversion format and preset to the user's default. Handles properly if the user setting is missing or junk
@@ -989,15 +966,6 @@ void MainWindow::convertBackgroundWorker(uiSelections_t uiSelections) {
         compressImages(copiedFiles);
     }
 
-    // Insert into .xlsx file if enabled
-    if(uiSelections.XLSXEnabled) {
-        ui->ConvertButton->setText("Adding to XLSX..."); // Technically not thread-safe but no competing events
-        // Name of the folder that has been converted to, aka "parsedFolderSyntax"
-        QString lastFolder = outputDir.dirName();
-
-        insertInWorkbook(lastFolder, uiSelections.XLSXLogScore, uiSelections.XLSXNotes);
-    }
-
     // Delete temp folder if enabled (and the temp folder isn't the output folder)
     if(uiSelections.deleteTempEnabled && uiSelections.tempDir != outputDir) {
         removeDir(uiSelections.tempDir.path());
@@ -1032,10 +1000,6 @@ void MainWindow::convertBackgroundWorker(uiSelections_t uiSelections) {
         // Clear the artist and album QLineEdits
         ui->ArtistLineEdit->setText(""); // Technically not thread-safe but no competing events
         ui->AlbumLineEdit->setText(""); // Technically not thread-safe but no competing events
-
-        // Clear the XLSX score and notes boxes
-        ui->XLSXLogScoreLineEdit->setText(""); // Technically not thread-safe but no competing events
-        ui->XLSXNotesLineEdit->setText(""); // Technically not thread-safe but no competing events
     }
 }
 
@@ -1098,9 +1062,6 @@ void MainWindow::convertInitialize() {
                                 ui->CopyContentsLineEdit->text(),
                                 ui->RenameLogCueCheckBox->isChecked(),
                                 ui->CompressImagesCheckBox->isChecked(),
-                                ui->XLSXSheetCheckBox->isChecked(),
-                                ui->XLSXLogScoreLineEdit->text(),
-                                ui->XLSXNotesLineEdit->text(),
                                 ui->DeleteTempFolderCheckBox->isChecked(),
                                 ui->ConvertOpenFolderCheckBox->isChecked(),
                                 ui->ConvertToComboBox->currentText(),
@@ -1142,21 +1103,5 @@ void MainWindow::on_CopyContentsCheckBox_stateChanged(int state)
         ui->RenameLogCueCheckBox->setChecked(false);
         ui->CompressImagesCheckBox->setEnabled(false);
         ui->CompressImagesCheckBox->setChecked(false);
-    }
-}
-
-// Runs when the "insert into .xslx" QCheckBox is changed. Dynamically enables/disables other settings that are only relevant depending on this QCheckBox's status
-void MainWindow::on_XLSXSheetCheckBox_stateChanged(int state)
-{
-    QSettings MIKSettings;
-    // If true
-    if(state == 2) {
-        ui->XLSXLogScoreLineEdit->setVisible(true);
-        ui->XLSXNotesLineEdit->setVisible(true);
-    }
-    // Else false
-    else {
-        ui->XLSXLogScoreLineEdit->setVisible(false);
-        ui->XLSXNotesLineEdit->setVisible(false);
     }
 }
