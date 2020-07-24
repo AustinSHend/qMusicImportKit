@@ -12,7 +12,7 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 * Genuine LAME header info is preserved by exporting all tags from a .flac, decoding to .wav (destroying all tags in the process), encoding the .wav to .mp3 through LAME, and reapplying original tags to the .mp3 (including preserving unlimited custom tags through TXXX frame manipulation).
 
-* Loudgain-powered ReplayGain data on all formats, using the ITU-R BS.1770 algorithm with EBU (-23 dB) reference loudness and true peak calculation.
+* Loudgain-powered ReplayGain data on all formats, using the ITU-R BS.1770 algorithm with RG 2.0 (-18 dB) reference loudness and true peak calculation.
 
 * Quicklinks to Discogs and MusicBrainz using automatic artist+album metadata from the input files.
 

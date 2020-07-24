@@ -722,12 +722,11 @@ void MainWindow::calculateReplayGain (QStringList inputFLACs) {
     // -a: calculates album gain
     // -k: prevents clipping
     // -s e: extra information calculation (Reference loudness and range)
-    // -d -5: decrease gain by 5dB in order to comply with EBU standards (-23.0 LUFS offset)
     QStringList arguments;
 #if defined(Q_OS_WIN)
     arguments << "loudgain";
 #endif
-    arguments << "-a" << "-k" << "-s" << "e" << "-d" << "-5";
+    arguments << "-a" << "-k" << "-s" << "e";
     foreach (QString currentFLAC, inputFLACs) {
 #if defined(Q_OS_LINUX)
         arguments << QDir::toNativeSeparators(currentFLAC);
@@ -742,6 +741,30 @@ void MainWindow::calculateReplayGain (QStringList inputFLACs) {
     // Start and wait
     LoudgainProcess.start();
     LoudgainProcess.waitForFinished(-1);
+
+    // Manually insert a traditional reference loudness (e.g. 89 dB) instead of loudgain's relative reference loudness (e.g. -18 dB)
+    // The formula to get the reference loudness is "107 dB + Reference Loudness." RG 2.0 relative reference loudness is at -18 dB.
+    // Thus, 107 + -18 = 89 dB
+    // This is a temporary workaround until the loudgain author gets back to me on fixing this
+    // Other programs do not expect the relative reference loudness format and will interpret it as -125 dB instead of 89 dB (107 + x = -18)
+    // This is an extremely significant difference and will likely cause damage to audio equipment, including your ears
+    foreach (QString currentFLAC, inputFLACs) {
+        // Open a TagFile and PropertyMap of each input file
+        // Linux only wants StdStrings, while Windows prefers StdWStrings (char encoding errors possible if Windows uses StdStrings)
+#if defined(Q_OS_LINUX)
+        TagLib::FLAC::File currentFLACTagFile(currentFLAC.toStdString().data());
+#elif defined(Q_OS_WIN)
+        TagLib::FLAC::File currentFLACTagFile(currentFLAC.toStdWString().data());
+#endif
+        TagLib::PropertyMap currentFLACTagMap = currentFLACTagFile.properties();
+
+        // We manually insert the correct reference loudness, which needs to be correct for Opus's RG calculation (matches other scanners' format as well)
+        currentFLACTagMap.replace("REPLAYGAIN_REFERENCE_LOUDNESS", TagLib::String("89.00 dB"));
+
+        // Apply the map and save
+        currentFLACTagFile.setProperties(currentFLACTagMap);
+        currentFLACTagFile.save();
+    }
 }
 
 // Conversion controller to send each file and its parameters to the correct encoder with multi-threading
