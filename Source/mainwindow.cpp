@@ -255,7 +255,7 @@ void MainWindow::resetPaths() {
     QSettings MIKSettings;
     QString defaultInputPath = MIKSettings.value("sDefaultInput", "").toString();
     QString defaultTempPath = MIKSettings.value("sDefaultTemp", "").toString();
-    QString defaultOutputPath = MIKSettings.value("sDefaultTemp", "").toString();
+    QString defaultOutputPath = MIKSettings.value("sDefaultOutput", "").toString();
 
     // Change paths into platform-specific directory structure
     defaultInputPath = QDir::toNativeSeparators(defaultInputPath);
