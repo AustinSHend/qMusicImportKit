@@ -149,7 +149,7 @@ QString cleanString (QString input, QString ignoredChars) {
         // If the character is not ignored via parameter
         if (!ignoredChars.contains(replaceableIllegalChars[i])) {
             // Replace the character with its replacement in the input string
-            input = input.replace(replaceableIllegalChars[i], fullWidthReplacements[i]);
+            input.replace(replaceableIllegalChars[i], fullWidthReplacements[i]);
         }
     }
 
@@ -157,7 +157,7 @@ QString cleanString (QString input, QString ignoredChars) {
     foreach (QChar currentChar, input) {
         if(currentChar.unicode() <= 31 || currentChar.unicode() == 127) {
             // Remove the illegal character
-            input = input.remove(currentChar);
+            input.remove(currentChar);
         }
     }
 
