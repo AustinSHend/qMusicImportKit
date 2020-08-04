@@ -407,7 +407,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Rename .log and .cue to %albumart% - %album%.log and %album.cue%</string>
+     <string>Rename .log and .cue to %albumartist% - %album%.log and %album%.cue</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="CompressImagesCheckBox">
@@ -582,7 +582,7 @@
      <x>0</x>
      <y>0</y>
      <width>696</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
