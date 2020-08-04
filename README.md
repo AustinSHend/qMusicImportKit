@@ -26,7 +26,7 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 * Impossible to make bad (Lossy->Lossless, Lossy->Lossy) transcodes, ensuring that data stays artifact-free.
 
-* Robust codebase, currently tested on **73** albums of all shapes and sizes (including a few [witch.house](https://user-images.githubusercontent.com/2212907/70855973-1935b080-1e99-11ea-8d0b-b25ea975d8b3.png) albums for good measure). All features have been double and triple-checked against proper traditional methods to make sure the output files match.
+* Robust codebase, currently tested on **108** albums of all shapes and sizes (including a few [witch.house](https://user-images.githubusercontent.com/2212907/70855973-1935b080-1e99-11ea-8d0b-b25ea975d8b3.png) albums for good measure). All features have been double and triple-checked against proper traditional methods to make sure the output files match.
 
 * All features operate as fast as possible while still maintaining proper output. This program will always trade speed for accuracy. Check "Necessary Limitations/Quirks" below for inconvenient aspects of that decision.
 
