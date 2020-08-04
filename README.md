@@ -31,7 +31,7 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 * All features operate as fast as possible while still maintaining proper output. This program will always trade speed for accuracy. Check "Necessary Limitations/Quirks" below for inconvenient aspects of that decision.
 
 <div align="center">
-    <a href="url"><img src="https://user-images.githubusercontent.com/2212907/88407597-f0af5680-cd97-11ea-9fc1-570ad00f88c1.png"></a>
+    <a href="url"><img src="https://user-images.githubusercontent.com/2212907/89350881-72479400-d676-11ea-8666-55a5ac0430ad.png"></a>
 </div>
 
 ## Basic Usage
