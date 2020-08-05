@@ -109,7 +109,7 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
     * Decode .flac to .wav, for feeding into LAME
 
 * `lame` (Linux) or [lame.exe](http://lame.sourceforge.net/) ([Unofficial binaries](http://rarewares.org/mp3-lame-bundle.php)) (Windows)
-    * Convert .wav to .mp3 (automatically gets .wavs from flac.exe, which is also required for MP3 conversions)
+    * Convert .wav to .mp3 (automatically gets .wavs from `flac, which is also required for MP3 conversions)
 
 * `oxipng` (Linux) or [oxipng.exe](https://github.com/shssoichiro/oxipng) (Windows)
 	* Compresses and strips metadata from .pngs and .bmps
