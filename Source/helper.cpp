@@ -517,11 +517,13 @@ void compressPNGs(QStringList inputPNGs) {
     OxiPNGProcess.setProgram(programLocation);
 
     // OxiPNG arguments
-    // -o 6: optimization level (highest/slowest)
+    // -o max: highest/slowest optimization level
     // --strip safe: strip all metadata that doesn't impact viewing of image
+    // -a: use additional alpha optimizations
+    // -i0: force interlacing to be turned off
     // -t: number of threads
     QStringList arguments;
-    arguments << "-o" << "6" << "--strip" << "safe" << "-t" << QString::number(QThread::idealThreadCount());
+    arguments << "-o" << "max" << "--strip" << "safe" << "-a" << "-i0" << "-t" << QString::number(QThread::idealThreadCount());
     foreach (QString currentPNG, inputPNGs) {
         arguments << QDir::toNativeSeparators(currentPNG);
     }
