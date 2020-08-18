@@ -26,7 +26,7 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 * Impossible to make bad (Lossy->Lossless, Lossy->Lossy) transcodes, ensuring that data stays artifact-free.
 
-* Robust codebase, currently tested on **171** albums of all shapes and sizes (including a few [witch.house](https://user-images.githubusercontent.com/2212907/70855973-1935b080-1e99-11ea-8d0b-b25ea975d8b3.png) albums for good measure). All features have been double and triple-checked against proper traditional methods to make sure the output files match.
+* Robust codebase, currently tested on **212** albums of all shapes and sizes (including a few [witch.house](https://user-images.githubusercontent.com/2212907/70855973-1935b080-1e99-11ea-8d0b-b25ea975d8b3.png) albums for good measure). All features have been double and triple-checked against proper traditional methods to make sure the output files match.
 
 * All features operate as fast as possible while still maintaining proper output. This program will always trade speed for accuracy. Check "Necessary Limitations/Quirks" below for inconvenient aspects of that decision.
 
@@ -59,7 +59,7 @@ This is a fully-rewritten port of [MusicImportKit](https://github.com/AustinSHen
 
 6. Choose output folder: Pick a base folder that you want to send the converted files to. This folder path will be combined with your preferred syntax to create directories and files as desired.
 
-7. Create preferred syntax: Create a syntax to specify what your folders and files are going to be named. You can send files directly to the output folder with something like "%tracknumber%. %title%" or send them to a folder with something like "%albumartist% - %album%\\%tracknumber%. %title%"
+7. Create preferred syntax: Create a syntax to specify what your folders and files are going to be named. You can send files directly to the output folder with something like "%tracknumber%. %title%" or send them to a folder with something like "%albumartist% - %album%/%tracknumber%. %title%"
 
 8. Choose options: Most options are straightforward.
     * Copy specific filetypes will copy all matching files in the temp folder to the output folder. Regex and wildcards are supported.
